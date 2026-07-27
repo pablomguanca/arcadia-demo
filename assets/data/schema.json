@@ -1,0 +1,20 @@
+{
+  "@context": "https://schema.org",
+  "@type": "ApartmentComplex",
+  "name": "Arcadia Residence",
+  "description": "Desarrollo inmobiliario en pozo de departamentos de 1, 2 y 3 ambientes en Coghlan, CABA.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Av. Congreso 3163",
+    "addressLocality": "Coghlan, Ciudad Autónoma de Buenos Aires",
+    "addressCountry": "AR"
+  },
+  "developer": {
+    "@type": "Organization",
+    "name": "Grupo Trust Real Estate"
+  },
+  "numberOfAccommodationUnits": {
+    "@type": "QuantitativeValue",
+    "value": "unidades de 1, 2 y 3 ambientes"
+  }
+}
