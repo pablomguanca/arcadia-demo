@@ -1,0 +1,78 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.site-footer {
+  background-color: v.$color-olive-dark;
+  padding-block: v.$space-5;
+
+  &__inner {
+    @include m.flex(column, flex-start, flex-start, v.$space-4);
+
+    @include m.mq(md) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+  }
+
+  &__brand {
+    font-family: v.$font-heading;
+    font-size: v.$fs-lg;
+    font-weight: v.$fw-bold;
+    color: v.$color-white;
+    margin-bottom: v.$space-1;
+  }
+
+  &__address {
+    font-size: v.$fs-sm;
+    color: v.$white-70;
+    font-style: normal;
+  }
+
+  &__nav {
+    @include m.flex(column, flex-start, flex-start, v.$space-1);
+  }
+
+  &__nav-link {
+    font-size: v.$fs-sm;
+    color: v.$white-85;
+    transition: color v.$transition-base;
+
+    &:hover,
+    &:focus-visible {
+      color: v.$color-sage;
+    }
+  }
+
+  &__social {
+    @include m.flex(row, flex-start, center, v.$space-2);
+  }
+
+  &__social-link {
+    @include m.flex(row, center, center);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: v.$sage-light-15;
+    transition: background-color v.$transition-base;
+
+    &:hover,
+    &:focus-visible {
+      background-color: v.$color-sage;
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+      fill: v.$color-white;
+    }
+  }
+
+  &__bottom {
+    margin-top: v.$space-4;
+    padding-top: v.$space-3;
+    border-top: 1px solid v.$sage-light-15;
+    font-size: v.$fs-xs;
+    color: v.$white-70;
+  }
+}

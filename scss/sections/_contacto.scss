@@ -1,0 +1,36 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.contacto {
+  @include m.section-padding;
+  background-color: v.$color-olive-dark;
+
+  &__inner {
+    @include m.flex(column, flex-start, stretch, v.$space-6);
+
+    @include m.mq(lg) {
+      flex-direction: row;
+    }
+  }
+
+  &__intro,
+  &__form {
+    flex: 1;
+  }
+
+  &__text {
+    margin-top: v.$space-2;
+    margin-bottom: v.$space-3;
+    color: v.$white-85;
+    max-width: 50ch;
+  }
+
+  &__data {
+    @include m.flex(column, flex-start, stretch, v.$space-1);
+  }
+
+  &__data-item {
+    font-size: v.$fs-sm;
+    color: v.$color-sage-light;
+  }
+}

@@ -1,0 +1,52 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+body {
+  font-family: v.$font-body;
+  font-size: v.$fs-base;
+  font-weight: v.$fw-regular;
+  line-height: v.$lh-base;
+  color: v.$color-white;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: v.$font-heading;
+  font-weight: v.$fw-bold;
+  line-height: v.$lh-tight;
+}
+
+h1 {
+  font-size: v.$fs-3xl;
+
+  @include m.mq(md) {
+    font-size: v.$fs-4xl;
+  }
+}
+
+h2 {
+  font-size: v.$fs-2xl;
+
+  @include m.mq(md) {
+    font-size: v.$fs-3xl;
+  }
+}
+
+h3 {
+  font-size: v.$fs-xl;
+}
+
+p {
+  line-height: v.$lh-loose;
+}
+
+.eyebrow {
+  font-family: v.$font-body;
+  font-size: v.$fs-sm;
+  font-weight: v.$fw-semibold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: v.$color-sage;
+}

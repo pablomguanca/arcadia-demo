@@ -1,0 +1,69 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.vistazo {
+  @include m.section-padding;
+  background-color: v.$color-olive;
+
+  &__intro {
+    margin-top: v.$space-2;
+    max-width: 55ch;
+    color: v.$white-85;
+  }
+
+  &__units {
+    margin-top: v.$space-4;
+  }
+
+  &__amenities-title {
+    margin-top: v.$space-6;
+    margin-bottom: v.$space-3;
+  }
+
+  &__amenities {
+    grid-template-columns: repeat(2, 1fr);
+
+    @include m.mq(md) {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+
+  &__gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: v.$space-2;
+    margin-top: v.$space-6;
+
+    @include m.mq(md) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &__gallery-img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: v.$radius-sm;
+  }
+
+  &__tour-cta {
+    @include m.flex(column, center, flex-start, v.$space-2);
+    margin-top: v.$space-6;
+    padding: v.$space-4;
+    background-color: v.$sage-light-15;
+    border-radius: v.$radius-lg;
+
+    @include m.mq(md) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  &__tour-text {
+    font-family: v.$font-heading;
+    font-size: v.$fs-lg;
+    font-weight: v.$fw-semibold;
+  }
+}

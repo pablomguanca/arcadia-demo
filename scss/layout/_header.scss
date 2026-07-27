@@ -1,0 +1,140 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: v.$z-header;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: v.$olive-dark-40;
+    backdrop-filter: blur(8px);
+    z-index: -1;
+  }
+
+  &__inner {
+    @include m.flex(row, space-between, center);
+    padding-block: v.$space-2;
+  }
+
+  &__logo {
+    @include m.flex(row, flex-start, center);
+  }
+
+  &__logo-img {
+    height: 48px;
+    width: auto;
+
+    @include m.mq(md) {
+      height: 56px;
+    }
+  }
+
+  &__toggle {
+    @include m.flex(column, center, center, v.$space-1 * 0.3);
+    position: relative;
+    width: 40px;
+    height: 40px;
+    z-index: v.$z-modal;
+
+    @include m.mq(md) {
+      display: none;
+    }
+  }
+
+  &__toggle-bar {
+    width: 24px;
+    height: 2px;
+    background-color: v.$color-white;
+    transition: transform v.$transition-base, opacity v.$transition-base;
+  }
+
+  &__toggle[aria-expanded='true'] &__toggle-bar {
+    &:nth-child(1) {
+      transform: translateY(3.6px) rotate(48deg);
+    }
+
+    &:nth-child(2) {
+      opacity: 0;
+    }
+
+    &:nth-child(3) {
+      transform: translateY(-6px) rotate(-48deg);
+    }
+  }
+
+  &__overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity v.$transition-slow;
+    z-index: calc(#{v.$z-modal} - 2);
+
+    &[data-open='true'] {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    @include m.mq(md) {
+      display: none;
+    }
+  }
+
+  &__nav {
+    position: fixed;
+    inset: 0 0 0 30%;
+    background-color: v.$color-olive-dark;
+    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.35);
+    transform: translateX(100%);
+    transition: transform v.$transition-slow;
+    z-index: calc(#{v.$z-modal} - 1);
+
+    &[data-open='true'] {
+      transform: translateX(0);
+    }
+
+    @include m.mq(md) {
+      position: static;
+      inset: auto;
+      background-color: transparent;
+      box-shadow: none;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  &__nav-list {
+    @include m.flex(column, center, flex-start, v.$space-3);
+    height: 100%;
+    padding: v.$space-6 v.$space-3;
+
+    @include m.mq(md) {
+      flex-direction: row;
+      align-items: center;
+      gap: v.$space-4;
+      padding: 0;
+    }
+  }
+
+  &__nav-link {
+    font-family: v.$font-heading;
+    font-size: 1.3rem;
+    font-weight: v.$fw-medium;
+    color: v.$color-white;
+    transition: color v.$transition-base;
+
+    &:hover,
+    &:focus-visible {
+      color: v.$color-sage;
+    }
+
+    @include m.mq(md) {
+      font-size: v.$fs-sm;
+    }
+  }
+}

@@ -1,0 +1,50 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.badge {
+  @include m.flex(column, flex-start, center, v.$space-1);
+  text-align: center;
+  padding: v.$space-2;
+
+  &__icon {
+    @include m.flex(row, center, center);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: v.$sage-light-15;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: v.$color-sage;
+      stroke-width: 1.5;
+    }
+  }
+
+  &__label {
+    font-size: v.$fs-xs;
+    font-weight: v.$fw-medium;
+    color: v.$white-85;
+  }
+
+  &--link {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: v.$space-1;
+    width: auto;
+    padding: v.$space-1 v.$space-2;
+    border-radius: 999px;
+    background-color: v.$sage-light-15;
+    font-size: v.$fs-xs;
+    font-weight: v.$fw-semibold;
+    color: v.$color-sage-light;
+    transition: background-color v.$transition-base;
+
+    &:hover,
+    &:focus-visible {
+      background-color: v.$sage-light-25;
+    }
+  }
+}

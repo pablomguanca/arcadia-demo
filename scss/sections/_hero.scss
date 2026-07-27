@@ -1,0 +1,52 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  @include m.flex(column, flex-end, flex-start);
+  overflow: hidden;
+
+  &__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, v.$olive-dark-40 0%, rgba(v.$color-olive-dark, 0.85) 100%);
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    padding-block: v.$space-6;
+  }
+
+  &__eyebrow {
+    margin-bottom: v.$space-2;
+  }
+
+  &__title {
+    color: v.$color-white;
+    max-width: 14ch;
+    margin-bottom: v.$space-2;
+  }
+
+  &__subtitle {
+    max-width: 45ch;
+    color: v.$white-85;
+    margin-bottom: v.$space-4;
+  }
+
+  &__cta-group {
+    max-width: 420px;
+  }
+}

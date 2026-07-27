@@ -1,0 +1,38 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.event-banner {
+  background-color: v.$color-sage;
+  color: v.$color-olive-dark;
+
+  &__inner {
+    @include m.flex(column, center, center, v.$space-1);
+    padding-block: v.$space-1;
+    text-align: center;
+
+    @include m.mq(sm) {
+      flex-direction: row;
+      gap: v.$space-2;
+    }
+  }
+
+  &__text {
+    font-size: v.$fs-xs;
+    font-weight: v.$fw-semibold;
+
+    @include m.mq(sm) {
+      font-size: v.$fs-sm;
+    }
+  }
+
+  &__link {
+    font-size: v.$fs-xs;
+    font-weight: v.$fw-bold;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    @include m.mq(sm) {
+      font-size: v.$fs-sm;
+    }
+  }
+}

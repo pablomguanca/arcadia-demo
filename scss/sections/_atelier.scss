@@ -1,0 +1,163 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.atelier {
+  @include m.section-padding;
+  background-color: v.$color-olive-dark;
+
+  &__inner {
+    @include m.flex(column, flex-start, center, v.$space-4);
+
+    @include m.mq(md) {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  &__content {
+    flex: 1;
+  }
+
+  &__text {
+    margin-top: v.$space-2;
+    margin-bottom: v.$space-3;
+    color: v.$white-85;
+    max-width: 55ch;
+  }
+
+  &__media {
+    flex: 1;
+    width: 100%;
+  }
+
+  &__image {
+    width: 100%;
+    height: auto;
+    border-radius: v.$radius-lg;
+    aspect-ratio: 8 / 9;
+    object-fit: cover;
+  }
+}
+
+.artista {
+  @include m.section-padding;
+  background-color: v.$color-olive;
+
+  &__intro {
+    max-width: 60ch;
+    margin-top: v.$space-2;
+    margin-bottom: v.$space-5;
+    color: v.$white-85;
+  }
+
+  &__profile {
+    @include m.flex(column, flex-start, stretch, v.$space-4);
+    margin-bottom: v.$space-6;
+
+    @include m.mq(md) {
+      flex-direction: row;
+      align-items: center;
+      gap: v.$space-5;
+    }
+  }
+
+  &__hero {
+    flex: 0 0 auto;
+    width: 100%;
+
+    @include m.mq(md) {
+      flex-basis: 42%;
+    }
+  }
+
+  &__hero-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: v.$radius-lg;
+    box-shadow: v.$shadow-card;
+  }
+
+  &__info {
+    flex: 1;
+  }
+
+  &__name {
+    margin-bottom: v.$space-2;
+  }
+
+  &__bio {
+    color: v.$white-85;
+    max-width: 60ch;
+    margin-bottom: v.$space-3;
+  }
+
+  &__quote {
+    border-left: 3px solid v.$color-sage;
+    padding-left: v.$space-3;
+    margin: 0;
+  }
+
+  &__quote-text {
+    font-family: v.$font-heading;
+    font-style: italic;
+    font-size: v.$fs-xl;
+    color: v.$color-sage-light;
+    line-height: v.$lh-tight;
+  }
+
+  &__concept {
+    background-color: v.$sage-light-10;
+    border: 1px solid v.$sage-light-15;
+    border-radius: v.$radius-lg;
+    padding: v.$space-4;
+    margin-bottom: v.$space-6;
+  }
+
+  &__concept-title {
+    margin-bottom: v.$space-2;
+  }
+
+  &__concept-text {
+    color: v.$white-85;
+    max-width: 65ch;
+  }
+
+  &__gallery-title {
+    margin-bottom: v.$space-3;
+  }
+
+  &__gallery {
+    margin-top: v.$space-3;
+  }
+
+  &__artwork {
+    background-color: v.$olive-dark-40;
+    border-radius: v.$radius-md;
+    overflow: hidden;
+  }
+
+  &__artwork-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+
+  &__artwork-caption {
+    padding: v.$space-2;
+  }
+
+  &__artwork-title {
+    font-family: v.$font-heading;
+    font-weight: v.$fw-semibold;
+    color: v.$color-white;
+    margin-bottom: v.$space-1 * 0.5;
+  }
+
+  &__artwork-meta {
+    font-size: v.$fs-xs;
+    color: v.$color-sage-light;
+  }
+}

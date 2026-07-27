@@ -1,0 +1,63 @@
+$color-olive: #3C4A3A;
+$color-olive-dark: #2C3729;
+$color-sage: #8FAF87;
+$color-sage-light: #A9C4A0;
+$color-white: #FFFFFF;
+$color-black: #1A1A1A;
+
+$sage-light-10: rgba($color-sage-light, 0.1);
+$sage-light-15: rgba($color-sage-light, 0.15);
+$sage-light-25: rgba($color-sage-light, 0.25);
+$olive-dark-40: rgba($color-olive-dark, 0.4);
+$white-70: rgba($color-white, 0.7);
+$white-85: rgba($color-white, 0.85);
+
+$font-heading: 'Playfair Display', serif;
+$font-body: 'Inter', sans-serif;
+
+$fs-base: 1rem;
+$fs-sm: 0.875rem;
+$fs-xs: 0.75rem;
+$fs-lg: 1.125rem;
+$fs-xl: 1.5rem;
+$fs-2xl: 2rem;
+$fs-3xl: 2.5rem;
+$fs-4xl: 3.25rem;
+
+$fw-regular: 400;
+$fw-medium: 500;
+$fw-semibold: 600;
+$fw-bold: 700;
+
+$lh-tight: 1.15;
+$lh-base: 1.5;
+$lh-loose: 1.7;
+
+$space-1: 0.5rem;
+$space-2: 1rem;
+$space-3: 1.5rem;
+$space-4: 2rem;
+$space-5: 3rem;
+$space-6: 4rem;
+$space-7: 6rem;
+$space-8: 8rem;
+
+$bp-sm: 480px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+
+$container-max-width: 1200px;
+$container-padding: $space-2;
+
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 16px;
+$shadow-card: 0 4px 24px rgba($color-black, 0.15);
+
+$transition-base: 0.25s ease;
+$transition-slow: 0.4s ease;
+
+$z-header: 100;
+$z-banner: 90;
+$z-modal: 200;

@@ -1,0 +1,31 @@
+@use '../abstracts/variables' as v;
+
+body {
+  background-color: v.$color-olive;
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: v.$color-sage;
+  color: v.$color-olive-dark;
+}
+
+:focus-visible {
+  outline: 2px solid v.$color-sage-light;
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  z-index: v.$z-modal;
+  padding: v.$space-2;
+  background-color: v.$color-sage;
+  color: v.$color-olive-dark;
+  font-weight: v.$fw-semibold;
+
+  &:focus {
+    top: 0;
+  }
+}

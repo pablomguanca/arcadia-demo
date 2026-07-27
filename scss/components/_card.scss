@@ -1,0 +1,61 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.card {
+  @include m.flex(column, flex-start, stretch);
+  height: 100%;
+  background-color: v.$sage-light-10;
+  border: 1px solid v.$sage-light-15;
+  border-radius: v.$radius-md;
+  padding: v.$space-3;
+  transition: transform v.$transition-base, background-color v.$transition-base;
+
+  &:hover {
+    transform: translateY(-4px);
+    background-color: v.$sage-light-15;
+  }
+
+  &__eyebrow {
+    margin-bottom: v.$space-1;
+  }
+
+  &__title {
+    margin-bottom: v.$space-2;
+  }
+
+  &__text {
+    margin-bottom: v.$space-2;
+  }
+
+  &__link {
+    align-self: flex-start;
+    margin-top: auto;
+    padding-top: v.$space-2;
+  }
+
+  &__meta {
+    @include m.flex(row, flex-start, center, v.$space-1);
+    font-size: v.$fs-sm;
+    color: v.$color-sage-light;
+    margin-bottom: v.$space-2;
+  }
+
+  &__list {
+    @include m.flex(column, flex-start, stretch, v.$space-1);
+  }
+
+  &__list-item {
+    @include m.flex(row, flex-start, center, v.$space-1);
+    font-size: v.$fs-sm;
+    color: v.$white-85;
+
+    &::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: v.$color-sage;
+      flex-shrink: 0;
+    }
+  }
+}

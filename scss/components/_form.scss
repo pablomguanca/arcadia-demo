@@ -1,0 +1,73 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.form {
+  @include m.flex(column, flex-start, stretch, v.$space-3);
+
+  &__group {
+    @include m.flex(column, flex-start, stretch, v.$space-1);
+  }
+
+  &__label {
+    font-size: v.$fs-sm;
+    font-weight: v.$fw-medium;
+    color: v.$white-85;
+  }
+
+  &__input,
+  &__textarea {
+    padding: v.$space-2;
+    background-color: v.$sage-light-10;
+    border: 1px solid v.$sage-light-25;
+    border-radius: v.$radius-sm;
+    color: v.$color-white;
+    transition: border-color v.$transition-base;
+
+    &::placeholder {
+      color: v.$white-70;
+    }
+
+    &:focus-visible {
+      border-color: v.$color-sage;
+    }
+
+    &[aria-invalid='true'] {
+      border-color: #d97a6a;
+    }
+  }
+
+  &__textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  &__error {
+    font-size: v.$fs-xs;
+    color: #e8a798;
+    min-height: 1em;
+  }
+
+  &__radio-group {
+    @include m.flex(row, flex-start, center, v.$space-3);
+  }
+
+  &__radio-option {
+    @include m.flex(row, flex-start, center, v.$space-1);
+  }
+
+  &__radio-input {
+    width: 18px;
+    height: 18px;
+    accent-color: v.$color-sage;
+  }
+
+  &__submit {
+    align-self: flex-start;
+  }
+
+  &__status {
+    font-size: v.$fs-sm;
+    color: v.$color-sage-light;
+    min-height: 1em;
+  }
+}

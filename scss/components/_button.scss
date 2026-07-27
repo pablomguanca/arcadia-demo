@@ -1,0 +1,54 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.btn {
+  @include m.flex(row, center, center, v.$space-1);
+  display: inline-flex;
+  padding: v.$space-2 v.$space-4;
+  border-radius: v.$radius-sm;
+  font-size: v.$fs-sm;
+  font-weight: v.$fw-semibold;
+  letter-spacing: 0.02em;
+  transition: background-color v.$transition-base, color v.$transition-base, border-color v.$transition-base;
+
+  &--primary {
+    background-color: v.$color-sage;
+    color: v.$color-olive-dark;
+
+    &:hover,
+    &:focus-visible {
+      background-color: v.$color-sage-light;
+    }
+  }
+
+  &--outline {
+    background-color: transparent;
+    color: v.$color-white;
+    border: 1px solid v.$color-white;
+
+    &:hover,
+    &:focus-visible {
+      background-color: v.$color-white;
+      color: v.$color-olive-dark;
+    }
+  }
+
+  &--ghost {
+    background-color: v.$sage-light-15;
+    color: v.$color-white;
+
+    &:hover,
+    &:focus-visible {
+      background-color: v.$sage-light-25;
+    }
+  }
+
+  &-group {
+    @include m.flex(column, flex-start, stretch, v.$space-2);
+
+    @include m.mq(sm) {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+}

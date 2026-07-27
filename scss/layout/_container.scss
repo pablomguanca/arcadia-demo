@@ -1,0 +1,23 @@
+@use '../abstracts/mixins' as m;
+@use '../abstracts/variables' as v;
+
+.container {
+  @include m.container;
+}
+
+.quick-access {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: v.$space-4 0;
+  border-bottom: 1px solid v.$color-sage-light;
+  min-height: 400px;
+
+  h2 {
+    font-family: v.$font-heading;
+    font-size: v.$fs-3xl;
+    font-weight: v.$fw-bold;
+    line-height: v.$lh-tight;
+    margin-bottom: v.$space-2;
+  }
+}

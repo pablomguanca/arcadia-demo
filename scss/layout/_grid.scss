@@ -1,0 +1,27 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.grid {
+  display: grid;
+  gap: v.$space-3;
+
+  &--2-col {
+    grid-template-columns: 1fr;
+
+    @include m.mq(md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &--3-col {
+    grid-template-columns: 1fr;
+
+    @include m.mq(sm) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include m.mq(lg) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
