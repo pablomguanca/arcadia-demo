@@ -1,0 +1,85 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.nosotros {
+  @include m.section-padding;
+  background-color: v.$color-olive;
+
+  &__intro {
+    max-width: 65ch;
+    margin-bottom: v.$space-6;
+  }
+
+  &__lead {
+    margin-top: v.$space-2;
+    color: v.$white-85;
+  }
+
+  &__trayectoria {
+    margin-bottom: v.$space-6;
+  }
+
+  &__trayectoria-title {
+    margin-bottom: v.$space-1;
+  }
+
+  &__trayectoria-intro {
+    color: v.$white-85;
+    max-width: 60ch;
+    margin-bottom: v.$space-3;
+  }
+
+  &__gallery {
+    margin-top: v.$space-3;
+  }
+
+  &__rse {
+    background-color: v.$sage-light-10;
+    border: 1px solid v.$sage-light-15;
+    border-radius: v.$radius-lg;
+    padding: v.$space-4;
+  }
+
+  &__rse-title {
+    margin-bottom: v.$space-2;
+  }
+
+  &__rse-text {
+    color: v.$white-85;
+    max-width: 65ch;
+    margin-bottom: v.$space-3;
+  }
+
+  &__rse-list {
+    @include m.flex(column, flex-start, stretch, v.$space-3);
+
+    @include m.mq(md) {
+      flex-direction: row;
+    }
+  }
+
+  &__rse-item {
+    flex: 1;
+    padding-left: v.$space-3;
+    border-left: 3px solid v.$color-sage;
+  }
+
+  &__rse-item-title {
+    font-family: v.$font-heading;
+    font-weight: v.$fw-semibold;
+    color: v.$color-white;
+    margin-bottom: v.$space-1;
+  }
+
+  &__rse-item-text {
+    font-size: v.$fs-sm;
+    color: v.$white-85;
+  }
+
+  &__rse-footer {
+    margin-top: v.$space-3;
+    font-style: italic;
+    color: v.$color-sage-light;
+    max-width: 65ch;
+  }
+}

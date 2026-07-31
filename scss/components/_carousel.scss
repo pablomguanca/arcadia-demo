@@ -1,0 +1,120 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.carousel {
+  position: relative;
+
+  &__track {
+    display: flex;
+    gap: v.$space-3;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: v.$container-padding;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @include m.focus-ring;
+  }
+
+  &__slide {
+    flex: 0 0 85%;
+    scroll-snap-align: start;
+    background-color: v.$olive-dark-40;
+    border-radius: v.$radius-md;
+    overflow: hidden;
+
+    @include m.mq(sm) {
+      flex-basis: 60%;
+    }
+
+    @include m.mq(md) {
+      flex-basis: 45%;
+    }
+
+    @include m.mq(lg) {
+      flex-basis: 31%;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    transition: transform v.$transition-slow;
+  }
+
+  &__slide:hover &__image,
+  &__slide:focus-within &__image {
+    transform: scale(1.08);
+  }
+
+  &__caption {
+    padding: v.$space-2;
+    font-size: v.$fs-sm;
+    color: v.$color-sage-light;
+  }
+
+  &__controls {
+    @include m.flex(row, flex-end, center, v.$space-2);
+    margin-top: v.$space-3;
+
+    @include m.mq(lg) {
+      display: none;
+    }
+  }
+
+  &__dots {
+    @include m.flex(row, center, center, v.$space-1);
+    margin-top: v.$space-3;
+  }
+
+  &__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: v.$sage-light-25;
+    transition: background-color v.$transition-base, transform v.$transition-base;
+
+    &:hover,
+    &:focus-visible {
+      background-color: v.$color-sage-light;
+    }
+
+    &[aria-current='true'] {
+      background-color: v.$color-sage;
+      transform: scale(1.3);
+    }
+  }
+
+  &__button {
+    @include m.flex(row, center, center);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: v.$sage-light-15;
+    transition: background-color v.$transition-base;
+
+    &:hover,
+    &:focus-visible {
+      background-color: v.$color-sage;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: v.$color-white;
+      stroke-width: 2;
+    }
+  }
+}

@@ -13,9 +13,12 @@
 @use 'components/form';
 @use 'components/banner';
 @use 'components/lightbox';
+@use 'components/brand-mark';
+@use 'components/carousel';
 
 @use 'sections/hero';
 @use 'sections/arcadia-barrio';
 @use 'sections/atelier';
 @use 'sections/vistazo';
 @use 'sections/contacto';
+@use 'sections/nosotros';

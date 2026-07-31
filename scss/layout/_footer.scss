@@ -16,6 +16,7 @@
   }
 
   &__brand {
+    @include m.flex(row, flex-start, center, v.$space-1 * 0.5);
     font-family: v.$font-heading;
     font-size: v.$fs-lg;
     font-weight: v.$fw-bold;
