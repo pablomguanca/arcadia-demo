@@ -70,10 +70,28 @@
   }
 
   &__bottom {
+    @include m.flex(column, flex-start, flex-start, v.$space-1);
     margin-top: v.$space-4;
     padding-top: v.$space-3;
     border-top: 1px solid v.$sage-light-15;
     font-size: v.$fs-xs;
     color: v.$white-70;
+
+    @include m.mq(md) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  &__credit {
+    font-family: v.$font-credit;
+    font-size: v.$fs-base;
+    color: v.$color-white;
+  }
+
+  &__credit-accent {
+    font-weight: v.$fw-bold;
+    color: v.$color-gold;
   }
 }

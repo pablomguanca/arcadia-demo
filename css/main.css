@@ -414,11 +414,32 @@ body {
   fill: #FFFFFF;
 }
 .site-footer__bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0.5rem;
   margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid rgba(169, 196, 160, 0.15);
   font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.7);
+}
+@media (min-width: 768px) {
+  .site-footer__bottom {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+.site-footer__credit {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1rem;
+  color: #FFFFFF;
+}
+.site-footer__credit-accent {
+  font-weight: 700;
+  color: #C9A961;
 }
 
 .btn {
