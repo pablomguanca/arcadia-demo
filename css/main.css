@@ -1379,50 +1379,44 @@ body {
 .nosotros__gallery {
   margin-top: 1.5rem;
 }
-.nosotros__rse {
-  background-color: rgba(169, 196, 160, 0.1);
-  border: 1px solid rgba(169, 196, 160, 0.15);
-  border-radius: 16px;
-  padding: 2rem;
-}
-.nosotros__rse-title {
-  margin-bottom: 1rem;
-}
-.nosotros__rse-text {
-  color: rgba(255, 255, 255, 0.85);
-  max-width: 65ch;
-  margin-bottom: 1.5rem;
-}
-.nosotros__rse-list {
+.nosotros__cta {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
+  justify-content: center;
+  align-items: center;
   gap: 1.5rem;
+  text-align: center;
+  padding: 3rem 2rem;
+  background-color: rgba(169, 196, 160, 0.15);
+  border-radius: 16px;
 }
 @media (min-width: 768px) {
-  .nosotros__rse-list {
+  .nosotros__cta {
     flex-direction: row;
+    justify-content: center;
+    text-align: left;
   }
 }
-.nosotros__rse-item {
-  flex: 1;
-  padding-left: 1.5rem;
-  border-left: 3px solid #8FAF87;
-}
-.nosotros__rse-item-title {
+.nosotros__cta-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  justify-content: center;
   font-family: "Playfair Display", serif;
+  font-size: 1.125rem;
   font-weight: 600;
   color: #FFFFFF;
-  margin-bottom: 0.5rem;
 }
-.nosotros__rse-item-text {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.85);
+@media (min-width: 768px) {
+  .nosotros__cta-text {
+    justify-content: flex-start;
+    font-size: 1.5rem;
+  }
 }
-.nosotros__rse-footer {
-  margin-top: 1.5rem;
-  font-style: italic;
-  color: #A9C4A0;
-  max-width: 65ch;
+.nosotros__cta-logo {
+  height: 3em;
+  width: auto;
 }

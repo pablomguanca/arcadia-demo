@@ -33,53 +33,37 @@
     margin-top: v.$space-3;
   }
 
-  &__rse {
-    background-color: v.$sage-light-10;
-    border: 1px solid v.$sage-light-15;
+  &__cta {
+    @include m.flex(column, center, center, v.$space-3);
+    text-align: center;
+    padding: v.$space-5 v.$space-4;
+    background-color: v.$sage-light-15;
     border-radius: v.$radius-lg;
-    padding: v.$space-4;
-  }
-
-  &__rse-title {
-    margin-bottom: v.$space-2;
-  }
-
-  &__rse-text {
-    color: v.$white-85;
-    max-width: 65ch;
-    margin-bottom: v.$space-3;
-  }
-
-  &__rse-list {
-    @include m.flex(column, flex-start, stretch, v.$space-3);
 
     @include m.mq(md) {
       flex-direction: row;
+      justify-content: center;
+      text-align: left;
     }
   }
 
-  &__rse-item {
-    flex: 1;
-    padding-left: v.$space-3;
-    border-left: 3px solid v.$color-sage;
-  }
-
-  &__rse-item-title {
+  &__cta-text {
+    @include m.flex(row, center, center, v.$space-1 * 0.5);
+    flex-wrap: wrap;
+    justify-content: center;
     font-family: v.$font-heading;
+    font-size: v.$fs-lg;
     font-weight: v.$fw-semibold;
     color: v.$color-white;
-    margin-bottom: v.$space-1;
+
+    @include m.mq(md) {
+      justify-content: flex-start;
+      font-size: v.$fs-xl;
+    }
   }
 
-  &__rse-item-text {
-    font-size: v.$fs-sm;
-    color: v.$white-85;
-  }
-
-  &__rse-footer {
-    margin-top: v.$space-3;
-    font-style: italic;
-    color: v.$color-sage-light;
-    max-width: 65ch;
+  &__cta-logo {
+    height: 3em;
+    width: auto;
   }
 }
