@@ -92,13 +92,16 @@
             <li class="contacto__data-item">Av. Congreso 3163, Coghlan, CABA</li>
             <li class="contacto__data-item"><a href="tel:+541163755461" aria-label="Llamar a Arcadia Art Residence">+54
                 11 6375-5461</a></li>
-            <li class="contacto__data-item"><a href="mailto:contacto@grupotrust.com.ar"
-                aria-label="Enviar email a Grupo Trust">contacto@arcadiaartresidence.com.ar</a></li>
           </ul>
         </div>
 
         <form class="form contacto__form" id="contact-form" novalidate
+          action="https://formsubmit.co/proyectoarcadiaresidence@gmail.com" method="POST"
           aria-label="Formulario de consulta sobre Arcadia Residence">
+          <input type="hidden" name="_subject" value="Nueva consulta desde arcadiaartresidence.com.ar">
+          <input type="hidden" name="_template" value="table">
+          <input type="text" name="_honey" hidden tabindex="-1" autocomplete="off">
+
           <div class="form__group">
             <label class="form__label" for="nombre">Nombre y apellido</label>
             <input class="form__input" type="text" id="nombre" name="nombre" required aria-required="true"

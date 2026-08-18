@@ -11,6 +11,11 @@
   letter-spacing: 0.02em;
   transition: background-color v.$transition-base, color v.$transition-base, border-color v.$transition-base;
 
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
   &--primary {
     background-color: v.$color-sage;
     color: v.$color-olive-dark;

@@ -1,3 +1,5 @@
+import { RECAPTCHA_SITE_KEY } from '../config.js';
+
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_PATTERN = /^[\d\s()+-]{6,}$/;
 
@@ -45,11 +47,45 @@ function applyLeadParams(form) {
   }
 }
 
+function loadRecaptchaScript() {
+  return new Promise((resolve, reject) => {
+    if (window.grecaptcha) {
+      resolve();
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
+    script.onload = () => window.grecaptcha.ready(resolve);
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+async function getRecaptchaToken() {
+  await loadRecaptchaScript();
+  return window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'contact' });
+}
+
+async function verifyRecaptcha(token) {
+  const response = await fetch('/api/verify-recaptcha', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token }),
+  });
+
+  if (!response.ok) return false;
+
+  const data = await response.json();
+  return data.success === true;
+}
+
 export function initFormValidation() {
   const form = document.getElementById('contact-form');
   if (!form) return;
 
   applyLeadParams(form);
+  loadRecaptchaScript().catch(() => {});
 
   const status = document.getElementById('form-status');
   const fields = [
@@ -62,7 +98,7 @@ export function initFormValidation() {
     input.addEventListener('blur', () => validateField(input, error));
   });
 
-  form.addEventListener('submit', (event) => {
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const isValid = fields
@@ -74,7 +110,33 @@ export function initFormValidation() {
       return;
     }
 
-    status.textContent = 'Gracias, recibimos tu consulta. Te contactaremos a la brevedad.';
-    form.reset();
+    const submitButton = form.querySelector('.form__submit');
+    submitButton.disabled = true;
+    status.textContent = 'Enviando tu consulta...';
+
+    try {
+      const token = await getRecaptchaToken();
+      const isHuman = await verifyRecaptcha(token);
+
+      if (!isHuman) {
+        status.textContent = 'No pudimos verificar tu consulta. Probá de nuevo o escribinos a contacto@arcadiaartresidence.com.ar.';
+        return;
+      }
+
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+
+      if (!response.ok) throw new Error('Submission failed');
+
+      status.textContent = 'Gracias, recibimos tu consulta. Te contactaremos a la brevedad.';
+      form.reset();
+    } catch (error) {
+      status.textContent = 'Hubo un problema al enviar tu consulta. Probá de nuevo o escribinos a contacto@arcadiaartresidence.com.ar.';
+    } finally {
+      submitButton.disabled = false;
+    }
   });
 }
