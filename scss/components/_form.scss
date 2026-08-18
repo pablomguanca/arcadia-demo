@@ -60,42 +60,38 @@
   }
 
   &__radio-group {
-    @include m.flex(row, flex-start, stretch, v.$space-1);
-    flex-wrap: wrap;
+    @include m.flex(row, stretch, stretch, 0);
+    background-color: v.$sage-light-10;
+    border: 1px solid v.$sage-light-25;
+    border-radius: v.$radius-sm;
+    padding: 4px;
   }
 
   &__radio-option {
-    @include m.flex(row, flex-start, center, v.$space-1);
+    @include m.flex(row, center, center, v.$space-1);
+    flex: 1;
     padding: v.$space-2 v.$space-3;
-    background-color: v.$sage-light-10;
-    border: 1px solid v.$sage-light-25;
-    border-radius: 999px;
+    border-radius: v.$radius-sm - 2px;
     color: v.$white-85;
     font-size: v.$fs-sm;
+    text-align: center;
     cursor: pointer;
-    transition: background-color v.$transition-base, border-color v.$transition-base, color v.$transition-base;
+    transition: background-color v.$transition-base, color v.$transition-base;
 
-    &:hover {
-      border-color: v.$color-sage;
+    &:has(:checked) {
+      background-color: v.$color-sage;
+      color: v.$color-olive-dark;
+      font-weight: v.$fw-semibold;
     }
 
     &:has(:focus-visible) {
       outline: 2px solid v.$color-sage-light;
       outline-offset: 2px;
     }
-
-    &:has(:checked) {
-      background-color: v.$color-sage;
-      border-color: v.$color-sage;
-      color: v.$color-olive-dark;
-      font-weight: v.$fw-semibold;
-    }
   }
 
   &__radio-input {
-    width: 16px;
-    height: 16px;
-    accent-color: v.$color-olive-dark;
+    @include m.visually-hidden;
   }
 
   &__submit {
@@ -107,4 +103,23 @@
     color: v.$color-sage-light;
     min-height: 1em;
   }
+
+  &__recaptcha-note {
+    font-size: v.$fs-xs;
+    color: v.$white-70;
+
+    a {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+
+      &:hover,
+      &:focus-visible {
+        color: v.$color-sage-light;
+      }
+    }
+  }
+}
+
+.grecaptcha-badge {
+  visibility: hidden;
 }

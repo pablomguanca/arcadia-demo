@@ -658,24 +658,61 @@ body {
   color: #e8a798;
   min-height: 1em;
 }
+.form fieldset.form__group {
+  border: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.form legend.form__label {
+  padding: 0;
+  margin-bottom: 0.5rem;
+}
 .form__radio-group {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 1.5rem;
+  justify-content: stretch;
+  align-items: stretch;
+  gap: 0;
+  background-color: rgba(169, 196, 160, 0.1);
+  border: 1px solid rgba(169, 196, 160, 0.25);
+  border-radius: 4px;
+  padding: 4px;
 }
 .form__radio-option {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   gap: 0.5rem;
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border-radius: 2px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.875rem;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.form__radio-option:has(:checked) {
+  background-color: #8FAF87;
+  color: #2C3729;
+  font-weight: 600;
+}
+.form__radio-option:has(:focus-visible) {
+  outline: 2px solid #A9C4A0;
+  outline-offset: 2px;
 }
 .form__radio-input {
-  width: 18px;
-  height: 18px;
-  accent-color: #8FAF87;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 .form__submit {
   align-self: flex-start;
@@ -685,45 +722,20 @@ body {
   color: #A9C4A0;
   min-height: 1em;
 }
-
-.event-banner {
-  background-color: #8FAF87;
-  color: #2C3729;
-}
-.event-banner__inner {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  padding-block: 0.5rem;
-  text-align: center;
-}
-@media (min-width: 480px) {
-  .event-banner__inner {
-    flex-direction: row;
-    gap: 1rem;
-  }
-}
-.event-banner__text {
+.form__recaptcha-note {
   font-size: 0.75rem;
-  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
 }
-@media (min-width: 480px) {
-  .event-banner__text {
-    font-size: 0.875rem;
-  }
-}
-.event-banner__link {
-  font-size: 0.75rem;
-  font-weight: 700;
+.form__recaptcha-note a {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-@media (min-width: 480px) {
-  .event-banner__link {
-    font-size: 0.875rem;
-  }
+.form__recaptcha-note a:hover, .form__recaptcha-note a:focus-visible {
+  color: #A9C4A0;
+}
+
+.grecaptcha-badge {
+  visibility: hidden;
 }
 
 .lightbox {
