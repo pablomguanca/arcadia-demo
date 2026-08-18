@@ -47,18 +47,55 @@
     min-height: 1em;
   }
 
+  fieldset.form__group {
+    border: none;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+  }
+
+  legend.form__label {
+    padding: 0;
+    margin-bottom: v.$space-1;
+  }
+
   &__radio-group {
-    @include m.flex(row, flex-start, center, v.$space-3);
+    @include m.flex(row, flex-start, stretch, v.$space-1);
+    flex-wrap: wrap;
   }
 
   &__radio-option {
     @include m.flex(row, flex-start, center, v.$space-1);
+    padding: v.$space-2 v.$space-3;
+    background-color: v.$sage-light-10;
+    border: 1px solid v.$sage-light-25;
+    border-radius: 999px;
+    color: v.$white-85;
+    font-size: v.$fs-sm;
+    cursor: pointer;
+    transition: background-color v.$transition-base, border-color v.$transition-base, color v.$transition-base;
+
+    &:hover {
+      border-color: v.$color-sage;
+    }
+
+    &:has(:focus-visible) {
+      outline: 2px solid v.$color-sage-light;
+      outline-offset: 2px;
+    }
+
+    &:has(:checked) {
+      background-color: v.$color-sage;
+      border-color: v.$color-sage;
+      color: v.$color-olive-dark;
+      font-weight: v.$fw-semibold;
+    }
   }
 
   &__radio-input {
-    width: 18px;
-    height: 18px;
-    accent-color: v.$color-sage;
+    width: 16px;
+    height: 16px;
+    accent-color: v.$color-olive-dark;
   }
 
   &__submit {

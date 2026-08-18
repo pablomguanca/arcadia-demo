@@ -456,6 +456,10 @@ body {
   letter-spacing: 0.02em;
   transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 .btn--primary {
   background-color: #8FAF87;
   color: #2C3729;
