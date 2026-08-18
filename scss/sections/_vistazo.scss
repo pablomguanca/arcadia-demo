@@ -48,7 +48,7 @@
   }
 
   &__tour-cta {
-    @include m.flex(column, center, flex-start, v.$space-2);
+    @include m.flex(column, center, flex-start, v.$space-3);
     margin-top: v.$space-6;
     padding: v.$space-4;
     background-color: v.$sage-light-15;
@@ -61,9 +61,38 @@
     }
   }
 
+  &__tour-copy {
+    @include m.flex(column, flex-start, flex-start, v.$space-1);
+  }
+
   &__tour-text {
     font-family: v.$font-heading;
     font-size: v.$fs-lg;
     font-weight: v.$fw-semibold;
+  }
+
+  &__tour-subtext {
+    color: v.$white-70;
+    font-size: v.$fs-sm;
+  }
+
+  &__tour-form {
+    width: 100%;
+
+    @include m.mq(md) {
+      flex-direction: row;
+      align-items: flex-start;
+      max-width: 420px;
+    }
+
+    .form__group {
+      flex: 1;
+    }
+
+    .form__submit {
+      @include m.mq(md) {
+        margin-top: v.$space-4;
+      }
+    }
   }
 }

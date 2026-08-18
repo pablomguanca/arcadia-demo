@@ -3,6 +3,7 @@ import { initCtaToggle } from './modules/cta-toggle.js';
 import { initGallery } from './modules/gallery.js';
 import { initFormValidation } from './modules/form-validation.js';
 import { initCarousel } from './modules/carousel.js';
+import { initTourGate } from './modules/tour-gate.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initNav();
@@ -10,4 +11,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initGallery();
   initFormValidation();
   initCarousel();
+  initTourGate();
 });

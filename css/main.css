@@ -1299,7 +1299,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 1.5rem;
   margin-top: 4rem;
   padding: 2rem;
   background-color: rgba(169, 196, 160, 0.15);
@@ -1312,10 +1312,39 @@ body {
     justify-content: space-between;
   }
 }
+.vistazo__tour-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
 .vistazo__tour-text {
   font-family: "Playfair Display", serif;
   font-size: 1.125rem;
   font-weight: 600;
+}
+.vistazo__tour-subtext {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+}
+.vistazo__tour-form {
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .vistazo__tour-form {
+    flex-direction: row;
+    align-items: flex-start;
+    max-width: 420px;
+  }
+}
+.vistazo__tour-form .form__group {
+  flex: 1;
+}
+@media (min-width: 768px) {
+  .vistazo__tour-form .form__submit {
+    margin-top: 2rem;
+  }
 }
 
 .contacto {

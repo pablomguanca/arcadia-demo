@@ -6,19 +6,19 @@
   <title>Un Vistazo a Arcadia | Tipologías y Amenities — Arcadia Residence</title>
   <meta name="description" content="Departamentos de 1, 2 y 3 ambientes en pozo en Coghlan. Conocé las tipologías, amenities y renders de Arcadia Residence, un desarrollo de Grupo Trust.">
   <meta name="keywords" content="departamentos en pozo Coghlan, tipologías Arcadia, amenities Coghlan, 1 2 3 ambientes Coghlan">
-  <link rel="canonical" href="https://www.arcadiaartresidence.com.ar/vistazo">
+  <link rel="canonical" href="https://brochure.arcadiaartresidence.com.ar/vistazo">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="Un Vistazo a Arcadia | Arcadia Residence">
   <meta property="og:description" content="Tipologías de 1, 2 y 3 ambientes y amenities de Arcadia Residence, en Coghlan.">
-  <meta property="og:image" content="assets/img/hero/arcadia-hero-og.jpg">
-  <meta property="og:url" content="https://www.arcadiaartresidence.com.ar/vistazo">
+  <meta property="og:image" content="https://brochure.arcadiaartresidence.com.ar/assets/img/hero/arcadia-hero.jpg">
+  <meta property="og:url" content="https://brochure.arcadiaartresidence.com.ar/vistazo">
   <meta property="og:locale" content="es_AR">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Un Vistazo a Arcadia | Arcadia Residence">
   <meta name="twitter:description" content="Tipologías de 1, 2 y 3 ambientes y amenities de Arcadia Residence, en Coghlan.">
-  <meta name="twitter:image" content="assets/img/hero/arcadia-hero-og.jpg">
+  <meta name="twitter:image" content="https://brochure.arcadiaartresidence.com.ar/assets/img/hero/arcadia-hero.jpg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,7 +29,28 @@
 
   <link rel="stylesheet" href="css/main.css">
 
-  <script type="application/ld+json" src="assets/data/schema.json"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ApartmentComplex",
+    "name": "Arcadia Residence",
+    "description": "Desarrollo inmobiliario en pozo de departamentos de 1, 2 y 3 ambientes en Coghlan, CABA.",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Av. Congreso 3163",
+      "addressLocality": "Coghlan, Ciudad Autónoma de Buenos Aires",
+      "addressCountry": "AR"
+    },
+    "developer": {
+      "@type": "Organization",
+      "name": "Grupo Trust Real Estate"
+    },
+    "numberOfAccommodationUnits": {
+      "@type": "QuantitativeValue",
+      "value": "unidades de 1, 2 y 3 ambientes"
+    }
+  }
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
@@ -146,8 +167,20 @@
         </div>
 
         <div class="vistazo__tour-cta">
-          <p class="vistazo__tour-text">¿Querés recorrer Arcadia como si ya estuvieras ahí?</p>
-          <a class="btn btn--primary" href="https://arcadia-congreso.com" target="_blank" rel="noopener" aria-label="Explorá el tour 360 grados y el brochure completo en arcadia-congreso.com, se abre en una pestaña nueva">Explorá el tour 360° y el brochure completo</a>
+          <div class="vistazo__tour-copy">
+            <p class="vistazo__tour-text">¿Querés recorrer Arcadia como si ya estuvieras ahí?</p>
+            <p class="vistazo__tour-subtext">Dejanos tu email y accedé al instante al tour 360° y al brochure completo.</p>
+          </div>
+
+          <form class="form vistazo__tour-form" id="tour-gate-form" novalidate aria-label="Formulario de acceso al tour 360 de Arcadia">
+            <div class="form__group">
+              <label class="form__label" for="tour-email">Email</label>
+              <input class="form__input" type="email" id="tour-email" name="email" required aria-required="true" placeholder="tu@email.com" aria-label="Correo electrónico para acceder al tour 360">
+              <span class="form__error" id="tour-email-error" role="alert"></span>
+            </div>
+            <button class="btn btn--primary form__submit" type="submit">Acceder al tour 360° y brochure</button>
+            <p class="form__status" id="tour-gate-status" role="status" aria-live="polite"></p>
+          </form>
         </div>
       </div>
     </section>

@@ -1,4 +1,4 @@
-import { RECAPTCHA_SITE_KEY } from '../config.js';
+import { getRecaptchaToken, loadRecaptchaScript } from './recaptcha.js';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_PATTERN = /^[\d\s()+-]{6,}$/;
@@ -45,26 +45,6 @@ function applyLeadParams(form) {
       radio.checked = radio.value === perfil;
     });
   }
-}
-
-function loadRecaptchaScript() {
-  return new Promise((resolve, reject) => {
-    if (window.grecaptcha) {
-      resolve();
-      return;
-    }
-
-    const script = document.createElement('script');
-    script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
-    script.onload = () => window.grecaptcha.ready(resolve);
-    script.onerror = reject;
-    document.head.appendChild(script);
-  });
-}
-
-async function getRecaptchaToken() {
-  await loadRecaptchaScript();
-  return window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'contact' });
 }
 
 async function verifyRecaptcha(token) {
@@ -115,7 +95,7 @@ export function initFormValidation() {
     status.textContent = 'Enviando tu consulta...';
 
     try {
-      const token = await getRecaptchaToken();
+      const token = await getRecaptchaToken('contact');
       const isHuman = await verifyRecaptcha(token);
 
       if (!isHuman) {
