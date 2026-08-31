@@ -2,6 +2,8 @@ import { getRecaptchaToken, loadRecaptchaScript } from './recaptcha.js';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_PATTERN = /^[\d\s()+-]{6,}$/;
+const WHATSAPP_URL = 'https://wa.me/541130459267?text=Hola%2C%20quiero%20recibir%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Arcadia%20Art%20Residence.';
+const WHATSAPP_LINK = `<a class="form__status-link" href="${WHATSAPP_URL}" target="_blank" rel="noopener">WhatsApp</a>`;
 
 function setFieldError(input, errorEl, message) {
   input.setAttribute('aria-invalid', message ? 'true' : 'false');
@@ -99,7 +101,7 @@ export function initFormValidation() {
       const isHuman = await verifyRecaptcha(token);
 
       if (!isHuman) {
-        status.textContent = 'No pudimos verificar tu consulta. Probá de nuevo o escribinos a contacto@arcadiaartresidence.com.ar.';
+        status.innerHTML = `No pudimos verificar tu consulta. Probá de nuevo o escribinos por ${WHATSAPP_LINK}.`;
         return;
       }
 
@@ -114,7 +116,7 @@ export function initFormValidation() {
       status.textContent = 'Gracias, recibimos tu consulta. Te contactaremos a la brevedad.';
       form.reset();
     } catch (error) {
-      status.textContent = 'Hubo un problema al enviar tu consulta. Probá de nuevo o escribinos a contacto@arcadiaartresidence.com.ar.';
+      status.innerHTML = `Hubo un problema al enviar tu consulta. Probá de nuevo o escribinos por ${WHATSAPP_LINK}.`;
     } finally {
       submitButton.disabled = false;
     }

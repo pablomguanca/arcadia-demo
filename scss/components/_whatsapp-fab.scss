@@ -1,0 +1,145 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.whatsapp-fab {
+  @include m.flex(row, center, center);
+  position: fixed;
+  right: v.$space-2;
+  bottom: calc(#{v.$space-2} + env(safe-area-inset-bottom, 0px));
+  z-index: v.$z-fab;
+  height: 56px;
+  min-width: 56px;
+  padding-inline: v.$space-2;
+  border-radius: 999px;
+  background-color: v.$color-whatsapp;
+  color: v.$color-white;
+  box-shadow: 0 6px 20px rgba(v.$color-black, 0.28);
+  animation: whatsapp-fab-in 0.4s ease both 0.6s;
+  transition: background-color v.$transition-base, box-shadow v.$transition-base,
+    transform v.$transition-base, opacity v.$transition-base, visibility v.$transition-base;
+
+  @include m.mq(md) {
+    right: v.$space-4;
+    bottom: v.$space-4;
+    height: 60px;
+    min-width: 60px;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background-color: v.$color-whatsapp-dark;
+    box-shadow: 0 10px 28px rgba(v.$color-black, 0.34);
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid v.$color-white;
+    outline-offset: 3px;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background-color: v.$color-whatsapp;
+    opacity: 0.5;
+    animation: whatsapp-fab-pulse 2.6s ease-out infinite;
+  }
+
+  &__icon {
+    @include m.flex(row, center, center);
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
+    }
+
+    @include m.mq(md) {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  &__label {
+    max-width: 0;
+    overflow: hidden;
+    opacity: 0;
+    font-size: v.$fs-sm;
+    font-weight: v.$fw-semibold;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    transition: max-width v.$transition-slow, opacity v.$transition-base, margin-inline-start v.$transition-slow;
+  }
+
+  &:hover &__label,
+  &:focus-visible &__label {
+    @include m.mq(md) {
+      max-width: 12rem;
+      opacity: 1;
+      margin-inline-start: v.$space-1;
+    }
+  }
+}
+
+.has-nav-open .whatsapp-fab {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(v.$space-1);
+}
+
+@keyframes whatsapp-fab-in {
+  from {
+    opacity: 0;
+    transform: translateY(v.$space-2) scale(0.85);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes whatsapp-fab-pulse {
+  0% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-fab {
+    animation: none;
+
+    &::before {
+      animation: none;
+      opacity: 0;
+    }
+
+    &:hover,
+    &:focus-visible {
+      transform: none;
+    }
+  }
+}
+
+@media print {
+  .whatsapp-fab {
+    display: none;
+  }
+}
