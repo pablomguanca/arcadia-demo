@@ -79,6 +79,14 @@ export function initTourGate() {
       }
 
       localStorage.setItem(STORAGE_KEY, 'true');
+
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'Lead', {
+          content_name: 'Tour 360',
+          status: 'success',
+        });
+      }
+
       unlockTour(form, status, '¡Gracias! Ya podés acceder al tour 360° y al brochure.', { openNow: true });
     } catch (error) {
       status.textContent = 'Hubo un problema al procesar tu solicitud. Probá de nuevo.';

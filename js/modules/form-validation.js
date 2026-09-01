@@ -113,6 +113,13 @@ export function initFormValidation() {
 
       if (!response.ok) throw new Error('Submission failed');
 
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'Lead', {
+          content_name: 'Formulario Web',
+          status: 'success',
+        });
+      }
+
       status.textContent = 'Gracias, recibimos tu consulta. Te contactaremos a la brevedad.';
       form.reset();
     } catch (error) {
