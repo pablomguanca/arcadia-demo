@@ -4,8 +4,20 @@ import { getRecaptchaToken, loadRecaptchaScript } from './recaptcha.js';
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const STORAGE_KEY = 'arcadia_tour_360_unlocked';
 
-async function verifyAndSaveLead(email) {
-  const token = await getRecaptchaToken('tour_360');
+// Veredictos del envío. Solo RECHAZO le cierra la puerta al visitante: es el
+// único caso en que el problema está de su lado y lo puede corregir.
+const OK = 'ok';
+const RECHAZO = 'rechazo';
+const AVERIA = 'averia';
+
+async function enviarLead(email) {
+  let token = '';
+
+  try {
+    token = await getRecaptchaToken('tour_360');
+  } catch (error) {
+    // reCAPTCHA no cargó. Mandamos sin token y que decida el backend.
+  }
 
   const response = await fetch('/api/save-lead', {
     method: 'POST',
@@ -13,10 +25,15 @@ async function verifyAndSaveLead(email) {
     body: JSON.stringify({ email, token, source: 'vistazo-tour-360' }),
   });
 
-  if (!response.ok) return false;
+  if (response.status === 400 || response.status === 403) return RECHAZO;
+  if (!response.ok) return AVERIA;
 
-  const data = await response.json();
-  return data.success === true;
+  const data = await response.json().catch(() => ({}));
+  if (data.success !== true) return AVERIA;
+
+  // El backend responde 200 con saved:false cuando no pudo guardar el mail pero
+  // igual corresponde dejar entrar.
+  return data.saved === false ? AVERIA : OK;
 }
 
 function unlockTour(form, status, message, { openNow } = {}) {
@@ -70,28 +87,40 @@ export function initTourGate() {
     submitButton.disabled = true;
     status.textContent = 'Verificando...';
 
+    let veredicto;
+
     try {
-      const saved = await verifyAndSaveLead(email);
-
-      if (!saved) {
-        status.textContent = 'No pudimos verificar tu email. Probá de nuevo.';
-        return;
-      }
-
-      localStorage.setItem(STORAGE_KEY, 'true');
-
-      if (typeof window.fbq === 'function') {
-        window.fbq('track', 'Lead', {
-          content_name: 'Tour 360',
-          status: 'success',
-        });
-      }
-
-      unlockTour(form, status, '¡Gracias! Ya podés acceder al tour 360° y al brochure.', { openNow: true });
+      veredicto = await enviarLead(email);
     } catch (error) {
-      status.textContent = 'Hubo un problema al procesar tu solicitud. Probá de nuevo.';
-    } finally {
-      submitButton.disabled = false;
+      // El endpoint no respondió. Un reintento por si fue algo pasajero y, si
+      // tampoco sale, entra igual: la falla es nuestra.
+      try {
+        veredicto = await enviarLead(email);
+      } catch (segundoError) {
+        veredicto = AVERIA;
+      }
     }
+
+    submitButton.disabled = false;
+
+    if (veredicto === RECHAZO) {
+      emailInput.setAttribute('aria-invalid', 'true');
+      status.textContent = 'No pudimos verificar tu email. Revisalo y probá de nuevo.';
+      return;
+    }
+
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', 'Lead', {
+        content_name: 'Tour 360',
+        status: 'success',
+      });
+    }
+
+    // Solo se recuerda el desbloqueo cuando el mail quedó realmente guardado. Si
+    // hubo avería, la próxima visita vuelve a pedirlo: es otra oportunidad de
+    // capturarlo, y esta vez la persona ya entró igual.
+    if (veredicto === OK) localStorage.setItem(STORAGE_KEY, 'true');
+
+    unlockTour(form, status, '¡Gracias! Ya podés acceder al tour 360° y al brochure.', { openNow: true });
   });
 }

@@ -81,17 +81,36 @@
 
     @include m.mq(md) {
       flex-direction: row;
+      flex-wrap: wrap;
       align-items: flex-start;
-      max-width: 420px;
+      max-width: 600px;
     }
 
     .form__group {
-      flex: 1;
+      // Solo en la fila de escritorio: acá el eje principal es el horizontal y
+      // los 200px son un ancho base. En mobile el form vuelve a ser columna y
+      // ese mismo valor pasaría a ser ALTO, inflando el campo con aire muerto.
+      @include m.mq(md) {
+        flex: 1 1 200px;
+      }
     }
 
     .form__submit {
       @include m.mq(md) {
-        margin-top: v.$space-4;
+        // Baja el botón lo justo para alinearlo con el input, salteando el alto
+        // del label y el gap del grupo. Calculado y no a ojo, así sigue
+        // alineado si cambian el tamaño de fuente o el espaciado.
+        margin-top: calc(#{v.$fs-sm} * #{v.$lh-base} + #{v.$space-1});
+        flex-shrink: 0;
+      }
+    }
+
+    // El estado ocupa la fila entera en vez de ser una columna más al costado:
+    // como hermano del input y el botón quedaba espichado contra el borde,
+    // partiendo el mensaje en una palabra por renglón.
+    .form__status {
+      @include m.mq(md) {
+        flex-basis: 100%;
       }
     }
   }

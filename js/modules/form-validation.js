@@ -49,17 +49,20 @@ function applyLeadParams(form) {
   }
 }
 
-async function verifyRecaptcha(token) {
-  const response = await fetch('/api/verify-recaptcha', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ token }),
-  });
+function collectPayload(form, token) {
+  const data = new FormData(form);
 
-  if (!response.ok) return false;
-
-  const data = await response.json();
-  return data.success === true;
+  return {
+    nombre: data.get('nombre'),
+    email: data.get('email'),
+    telefono: data.get('telefono'),
+    perfil: data.get('perfil'),
+    mensaje: data.get('mensaje'),
+    interes: data.get('interes'),
+    origen: data.get('origen'),
+    website: data.get('website'),
+    token,
+  };
 }
 
 export function initFormValidation() {
@@ -98,20 +101,26 @@ export function initFormValidation() {
 
     try {
       const token = await getRecaptchaToken('contact');
-      const isHuman = await verifyRecaptcha(token);
 
-      if (!isHuman) {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(collectPayload(form, token)),
+      });
+
+      if (response.status === 403) {
         status.innerHTML = `No pudimos verificar tu consulta. Probá de nuevo o escribinos por ${WHATSAPP_LINK}.`;
         return;
       }
 
-      const response = await fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: { Accept: 'application/json' },
-      });
+      if (response.status === 429) {
+        status.innerHTML = `Ya recibimos varias consultas tuyas. Esperá unos minutos o escribinos por ${WHATSAPP_LINK}.`;
+        return;
+      }
 
-      if (!response.ok) throw new Error('Submission failed');
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok || data.success !== true) throw new Error('Submission failed');
 
       if (typeof window.fbq === 'function') {
         window.fbq('track', 'Lead', {

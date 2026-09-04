@@ -1,131 +1,108 @@
+/**
+ * Gate del tour 360°: recibe el email, lo guarda en Brevo y le avisa a Arcadia.
+ *
+ * La regla de oro acá es distinguir RECHAZO de AVERÍA:
+ *
+ *   Rechazo → el envío está mal (email inválido, reCAPTCHA que da bot). Se
+ *             responde error y el front NO desbloquea. La persona puede
+ *             corregir y reintentar.
+ *
+ *   Avería  → algo nuestro se rompió (Brevo caído, API key mal cargada, Google
+ *             sin responder). Se responde 200 con `saved: false` y el front
+ *             desbloquea igual. El visitante no tiene la culpa, y dejarlo
+ *             afuera nos hace perder el lead entero además del mail.
+ *
+ * En toda avería el mail se loguea con el prefijo [lead-perdido], así queda
+ * recuperable a mano desde los logs de Vercel aunque no haya llegado a Brevo.
+ *
+ * Los envíos salen por Resend; Brevo solo guarda contactos.
+ */
+
+import { verifyHuman } from './_lib/recaptcha.js';
+import { sendEmail } from './_lib/resend.js';
+import { upsertContact } from './_lib/brevo.js';
+import { formatDate } from './_lib/format.js';
+import { tourAccessEmail } from './_lib/emails.js';
+
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-async function isHumanRequest(token) {
-  if (!token) return false;
-
-  const params = new URLSearchParams({
-    secret: process.env.RECAPTCHA_SECRET_KEY,
-    response: token,
-  });
-
-  const googleResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: params,
-  });
-
-  const data = await googleResponse.json();
-  return Boolean(data.success) && data.score >= 0.5;
-}
-
-async function saveToBrevo(email, source) {
-  const listId = Number(process.env.BREVO_LIST_ID);
-
-  const response = await fetch('https://api.brevo.com/v3/contacts', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'api-key': process.env.BREVO_API_KEY,
-    },
-    body: JSON.stringify({
-      email,
-      listIds: listId ? [listId] : undefined,
-      updateEnabled: true,
-      attributes: { SOURCE: source || 'website' },
-    }),
-  });
-
-  if (response.ok || response.status === 204) return true;
-
-  const data = await response.json().catch(() => ({}));
-  return data.code === 'duplicate_parameter';
-}
-
-const NOTIFY_TO = process.env.LEAD_NOTIFY_TO || 'oscarcavalli@gmail.com';
+const DEFAULT_NOTIFY_TO = 'oscarcavalli@gmail.com';
 
 const SOURCE_LABELS = {
   'vistazo-tour-360': 'Tour 360° y brochure — página "Un vistazo a Arcadia"',
 };
 
-const HTML_ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+function notifyRecipients() {
+  const destinos = String(process.env.LEAD_NOTIFY_TO || '')
+    .split(',')
+    .map((email) => email.trim())
+    .filter(Boolean);
 
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, (char) => HTML_ESCAPES[char]);
+  return destinos.length ? destinos : [DEFAULT_NOTIFY_TO];
 }
 
-function formatDate(date) {
-  return new Intl.DateTimeFormat('es-AR', {
-    dateStyle: 'short',
-    timeStyle: 'short',
-    timeZone: 'America/Argentina/Buenos_Aires',
-  }).format(date);
-}
-
-async function notifyNewLead(email, source) {
-  const sender = process.env.BREVO_SENDER_EMAIL;
-  if (!sender) return false;
-
-  const label = escapeHtml(SOURCE_LABELS[source] || String(source || 'website').slice(0, 80));
-  const safeEmail = escapeHtml(email);
-  const fecha = escapeHtml(formatDate(new Date()));
-
-  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'api-key': process.env.BREVO_API_KEY,
-    },
-    body: JSON.stringify({
-      sender: { name: 'Arcadia Art Residence', email: sender },
-      to: [{ email: NOTIFY_TO }],
-      replyTo: { email },
-      subject: `Nuevo acceso al tour 360° — ${email}`,
-      htmlContent:
-        '<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1A1A">' +
-        '<h2 style="font-size:18px;margin:0 0 16px">Alguien desbloqueó el tour 360°</h2>' +
-        '<table cellpadding="8" cellspacing="0" border="0" style="border-collapse:collapse">' +
-        `<tr><td style="border:1px solid #ddd"><strong>Email</strong></td><td style="border:1px solid #ddd"><a href="mailto:${safeEmail}">${safeEmail}</a></td></tr>` +
-        `<tr><td style="border:1px solid #ddd"><strong>Origen</strong></td><td style="border:1px solid #ddd">${label}</td></tr>` +
-        `<tr><td style="border:1px solid #ddd"><strong>Fecha</strong></td><td style="border:1px solid #ddd">${fecha}</td></tr>` +
-        '</table>' +
-        '<p style="color:#666;font-size:13px;margin-top:16px">El contacto también quedó guardado en la lista de Brevo.</p>' +
-        '</div>',
-    }),
-  });
-
-  return response.ok;
+/** Deja el lead en los logs para poder rescatarlo a mano cuando el guardado falló. */
+function logLostLead(email, source, motivo) {
+  console.error(`[lead-perdido] ${email} — origen: ${source || 'website'} — motivo: ${motivo}`);
 }
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
     res.status(405).json({ success: false, error: 'Method not allowed' });
     return;
   }
 
   const { email, token, source } = req.body || {};
 
+  // Rechazo: el dato está mal y la persona lo puede corregir.
   if (!email || typeof email !== 'string' || !EMAIL_PATTERN.test(email.trim())) {
     res.status(400).json({ success: false, error: 'Email inválido' });
     return;
   }
 
+  const cleanEmail = email.trim().toLowerCase();
+  const veredicto = await verifyHuman(token);
+
+  // Rechazo: Google dice que es un bot.
+  if (veredicto === 'rejected') {
+    res.status(403).json({ success: false, error: 'Verificación anti-bot fallida' });
+    return;
+  }
+
+  // Avería: no pudimos verificar. Seguimos igual, pero queda anotado.
+  if (veredicto === 'unavailable') {
+    console.warn('[save-lead] reCAPTCHA no disponible, se deja pasar el envío.');
+  }
+
   try {
-    const isHuman = await isHumanRequest(token);
-    if (!isHuman) {
-      res.status(403).json({ success: false, error: 'Verificación anti-bot fallida' });
-      return;
-    }
+    const saved = await upsertContact({
+      email: cleanEmail,
+      attributes: { SOURCE: source || 'website' },
+    });
 
-    const cleanEmail = email.trim().toLowerCase();
+    if (!saved) logLostLead(cleanEmail, source, 'Brevo rechazó el alta');
 
-    const saved = await saveToBrevo(cleanEmail, source);
-    if (!saved) throw new Error('Brevo save failed');
+    const aviso = tourAccessEmail({
+      email: cleanEmail,
+      origenLabel: SOURCE_LABELS[source] || String(source || 'website').slice(0, 80),
+      fecha: formatDate(new Date()),
+    });
 
     // El aviso es informativo: si falla, el visitante igual accede al tour.
-    await notifyNewLead(cleanEmail, source).catch(() => false);
+    await sendEmail({
+      to: notifyRecipients(),
+      replyTo: cleanEmail,
+      subject: aviso.subject,
+      html: aviso.html,
+      text: aviso.text,
+    }).catch(() => false);
 
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, saved });
   } catch (error) {
-    res.status(500).json({ success: false, error: 'No se pudo guardar el email' });
+    // Avería: se rompió algo nuestro. El visitante entra igual y el mail queda
+    // en los logs para recuperarlo.
+    logLostLead(cleanEmail, source, error && error.message ? error.message : 'error inesperado');
+    res.status(200).json({ success: true, saved: false });
   }
 }
