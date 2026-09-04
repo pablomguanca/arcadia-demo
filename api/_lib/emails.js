@@ -24,6 +24,9 @@ const SERIF = "'Playfair Display',Georgia,'Times New Roman',Times,serif";
 const SANS = "'Inter','Helvetica Neue',Helvetica,Arial,sans-serif";
 
 const SITE_URL = 'https://brochure.arcadiaartresidence.com.ar';
+// El mail necesita URL absoluta: los clientes de correo no resuelven rutas relativas
+// ni admiten data: URIs (Gmail las descarta).
+const LOGO_URL = `${SITE_URL}/assets/img/logo/logo-arcadia-email.png`;
 const WHATSAPP_URL = 'https://wa.me/541130459267';
 
 export function leadNotificationEmail({ nombre, origenLabel, fecha, filas }) {
@@ -139,12 +142,8 @@ export function welcomeEmail({ nombre }) {
 
         <tr>
           <td align="center" style="background-color:${COLOR.olive};padding:34px 32px">
-            <div class="serif-brand" style="font-family:${SERIF};font-size:24px;letter-spacing:2px;color:${COLOR.white}">
-              ARCADIA
-            </div>
-            <div style="font-family:${SANS};font-size:11px;letter-spacing:3px;text-transform:uppercase;color:${COLOR.sage};padding-top:8px">
-              Art Residence
-            </div>
+            <img src="${LOGO_URL}" width="260" height="78" alt="Arcadia Art Residence"
+                 style="display:block;border:0;width:260px;max-width:100%;height:auto;font-family:${SERIF};font-size:20px;letter-spacing:1px;color:${COLOR.white}">
           </td>
         </tr>
 
