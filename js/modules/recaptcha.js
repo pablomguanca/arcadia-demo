@@ -20,4 +20,15 @@ async function getRecaptchaToken(action) {
   return window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action });
 }
 
-export { loadRecaptchaScript, getRecaptchaToken };
+// reCAPTCHA v3 arrastra ~350 KB de JS de Google mas un iframe. Cargarlo apenas
+// abre la pagina castiga el render de todo el mundo para servir a los pocos que
+// completan el formulario. Se precarga con el primer contacto con el form: para
+// cuando llegue el submit ya esta listo, y quien solo pasa de largo nunca lo baja.
+function primeRecaptcha(form) {
+  const warmUp = () => loadRecaptchaScript().catch(() => {});
+
+  form.addEventListener('focusin', warmUp, { once: true });
+  form.addEventListener('pointerdown', warmUp, { once: true });
+}
+
+export { loadRecaptchaScript, getRecaptchaToken, primeRecaptcha };

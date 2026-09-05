@@ -9,26 +9,31 @@
         content="Somos una consultora especializada en desarrollos inmobiliarios desde el pozo desde 1999. Más de 30 emprendimientos y un compromiso solidario detrás de Arcadia Residence.">
     <meta name="keywords"
         content="consultora desarrollos inmobiliarios, emprendimientos desde el pozo, Grupo Trust, responsabilidad social empresaria, Arcadia Residence">
-    <link rel="canonical" href="https://brochure.arcadiaartresidence.com.ar/nosotros">
+    <link rel="canonical" href="https://arcadiaartresidence.com.ar/nosotros">
 
     <meta property="og:type" content="website">
     <meta property="og:title" content="Nosotros | Arcadia Residence">
     <meta property="og:description"
         content="Más de 25 años y 30 emprendimientos respaldan Arcadia Residence. Conocé a la consultora detrás del proyecto y su compromiso solidario.">
-    <meta property="og:image" content="https://brochure.arcadiaartresidence.com.ar/assets/img/hero/arcadia-hero.jpg">
-    <meta property="og:url" content="https://brochure.arcadiaartresidence.com.ar/nosotros">
+    <meta property="og:image" content="https://arcadiaartresidence.com.ar/assets/img/og/arcadia-og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://arcadiaartresidence.com.ar/nosotros">
     <meta property="og:locale" content="es_AR">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Nosotros | Arcadia Residence">
     <meta name="twitter:description" content="Más de 25 años y 30 emprendimientos respaldan Arcadia Residence.">
-    <meta name="twitter:image" content="https://brochure.arcadiaartresidence.com.ar/assets/img/hero/arcadia-hero.jpg">
+    <meta name="twitter:image" content="https://arcadiaartresidence.com.ar/assets/img/og/arcadia-og.jpg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;700&display=swap"
-        rel="stylesheet">
+    <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@500&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@500&display=swap">
+  </noscript>
 
     <link rel="icon" href="assets/icons/favicon.png" type="image/png">
     <link rel="apple-touch-icon" href="assets/icons/favicon.png">
@@ -66,9 +71,23 @@
           n.callMethod.apply(n, arguments) : n.queue.push(arguments)
       };
       if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-      n.queue = []; t = b.createElement(e); t.async = !0;
-      t.src = v; s = b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t, s)
+      n.queue = [];
+
+      // fbevents.js pesa ~110 KB y bloquea el hilo principal justo cuando el
+      // navegador esta pintando. Se inyecta cuando el hilo queda libre o ante
+      // la primera interaccion, lo que llegue antes. Los fbq() de abajo quedan
+      // encolados y se disparan igual al cargar el script.
+      var loaded = !1;
+      var load = function () {
+        if (loaded) return; loaded = !0;
+        t = b.createElement(e); t.async = !0; t.src = v;
+        s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+      };
+      ['pointerdown', 'keydown', 'scroll'].forEach(function (evt) {
+        f.addEventListener(evt, load, { once: !0, passive: !0 });
+      });
+      if (f.requestIdleCallback) f.requestIdleCallback(load, { timeout: 3000 });
+      else f.addEventListener('load', function () { setTimeout(load, 1200); });
     }(window, document, 'script',
       'https://connect.facebook.net/en_US/fbevents.js');
     fbq('init', '24488789974092669');
@@ -85,8 +104,8 @@
     <header class="site-header">
         <div class="container site-header__inner">
             <a class="site-header__logo" href="/" aria-label="Arcadia Residence, ir al inicio">
-                <img class="site-header__logo-img" src="assets/img/logo/logo-arcadia.jpg" alt="Arcadia Residence"
-                    width="160" height="40">
+                <img class="site-header__logo-img" src="assets/img/logo/logo-arcadia.webp" alt="Arcadia Residence" width="400" height="120"
+          decoding="async">
             </a>
 
             <button class="site-header__toggle" type="button" aria-label="Abrir menú de navegación"
@@ -138,45 +157,45 @@
                         <ul class="carousel__track" data-carousel-track tabindex="0"
                             aria-label="Emprendimientos desarrollados por la consultora">
                             <li class="carousel__slide">
-                                <img class="carousel__image" src="assets/img/nosotros/emprendimiento-01.jpg"
+                                <img class="carousel__image" src="assets/img/nosotros/emprendimiento-01.webp"
                                     alt="Fachada del emprendimiento 1 desarrollado por la consultora" width="600"
-                                    height="450" loading="lazy">
+                                    height="450" loading="lazy" decoding="async">
                                 <p class="carousel__caption">Almirante Brown 170 - CABA</p>
                             </li>
                             <li class="carousel__slide">
-                                <img class="carousel__image" src="assets/img/nosotros/emprendimiento-02.jpg"
+                                <img class="carousel__image" src="assets/img/nosotros/emprendimiento-02.webp"
                                     alt="Fachada del emprendimiento 2 desarrollado por la consultora" width="600"
-                                    height="450" loading="lazy">
+                                    height="450" loading="lazy" decoding="async">
                                 <p class="carousel__caption">Bonifacini 4864 - Caseros</p>
                             </li>
                             <li class="carousel__slide">
-                                <img class="carousel__image" src="assets/img/nosotros/emprendimiento-03.jpg"
+                                <img class="carousel__image" src="assets/img/nosotros/emprendimiento-03.webp"
                                     alt="Fachada del emprendimiento 3 desarrollado por la consultora" width="600"
-                                    height="450" loading="lazy">
+                                    height="450" loading="lazy" decoding="async">
                                 <p class="carousel__caption">Avenida Córdoba 6572 - CABA</p>
                             </li>
                             <li class="carousel__slide">
-                                <img class="carousel__image" src="assets/img/nosotros/emprendimiento-04.jpg"
+                                <img class="carousel__image" src="assets/img/nosotros/emprendimiento-04.webp"
                                     alt="Fachada del emprendimiento 4 desarrollado por la consultora" width="600"
-                                    height="450" loading="lazy">
+                                    height="450" loading="lazy" decoding="async">
                                 <p class="carousel__caption">Fischetti 4943 - Caseros</p>
                             </li>
                             <li class="carousel__slide">
-                                <img class="carousel__image" src="assets/img/nosotros/emprendimiento-05.jpg"
+                                <img class="carousel__image" src="assets/img/nosotros/emprendimiento-05.webp"
                                     alt="Fachada del emprendimiento 5 desarrollado por la consultora" width="600"
-                                    height="450" loading="lazy">
+                                    height="450" loading="lazy" decoding="async">
                                 <p class="carousel__caption">Barrio Cerrado Los Girasoles de Luján</p>
                             </li>
                             <li class="carousel__slide">
-                                <img class="carousel__image" src="assets/img/nosotros/emprendimiento-06.jpg"
+                                <img class="carousel__image" src="assets/img/nosotros/emprendimiento-06.webp"
                                     alt="Fachada del emprendimiento 6 desarrollado por la consultora" width="600"
-                                    height="450" loading="lazy">
+                                    height="450" loading="lazy" decoding="async">
                                 <p class="carousel__caption">Padilla 1050 - CABA</p>
                             </li>
                             <li class="carousel__slide">
-                                <img class="carousel__image" src="assets/img/nosotros/emprendimiento-07.jpg"
+                                <img class="carousel__image" src="assets/img/nosotros/emprendimiento-07.webp"
                                     alt="Fachada del emprendimiento 7 desarrollado por la consultora" width="600"
-                                    height="450" loading="lazy">
+                                    height="450" loading="lazy" decoding="async">
                                 <p class="carousel__caption">Rodriguez Peña 1145 - Santos Lugares</p>
                             </li>
                         </ul>
@@ -203,7 +222,7 @@
 
                 <div class="nosotros__cta">
                     <p class="nosotros__cta-text">Entrá y conocé este nuevo desarrollo
-                        <img class="nosotros__cta-logo" src="assets/img/logo/arcadia-art-isotipo.png"
+                        <img class="nosotros__cta-logo" src="assets/img/logo/arcadia-art-isotipo.webp"
                             alt="Arcadia Art Residence" width="315" height="94">
                     </p>
                     <a class="btn btn--primary" href="/vistazo"
@@ -218,7 +237,7 @@
     <footer class="site-footer">
         <div class="container site-footer__inner">
             <div>
-                <p class="site-footer__brand"><img class="brand-mark" src="assets/img/logo/arcadia-art-isotipo.png"
+                <p class="site-footer__brand"><img class="brand-mark" src="assets/img/logo/arcadia-art-isotipo.webp"
                         alt="Arcadia Art" width="189" height="57"> Residence</p>
                 <address class="site-footer__address">Av. Congreso 3163, Coghlan, CABA — un desarrollo de Grupo Trust
                     Real Estate</address>

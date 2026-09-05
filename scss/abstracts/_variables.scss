@@ -2,6 +2,10 @@ $color-olive: #3C4A3A;
 $color-olive-dark: #2C3729;
 $color-sage: #8FAF87;
 $color-sage-light: #A9C4A0;
+// Verde para texto chico sobre los fondos oscuros. $color-sage da 3.22:1 sobre
+// las cards y WCAG AA pide 4.5:1; este llega a 4.73:1 incluso con la card en
+// hover, que es el fondo mas claro donde aparece.
+$color-sage-text: #C3D8BC;
 $color-white: #FFFFFF;
 $color-black: #1A1A1A;
 $color-gold: #C9A961;

@@ -1,5 +1,5 @@
 import { TOUR_360_URL } from '../config.js';
-import { getRecaptchaToken, loadRecaptchaScript } from './recaptcha.js';
+import { getRecaptchaToken, primeRecaptcha } from './recaptcha.js';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const STORAGE_KEY = 'arcadia_tour_360_unlocked';
@@ -60,12 +60,12 @@ export function initTourGate() {
   const status = document.getElementById('tour-gate-status');
   const submitButton = form.querySelector('.form__submit');
 
-  loadRecaptchaScript().catch(() => {});
-
   if (localStorage.getItem(STORAGE_KEY) === 'true') {
     unlockTour(form, status, 'Ya verificamos tu email.');
     return;
   }
+
+  primeRecaptcha(form);
 
   emailInput.addEventListener('blur', () => {
     const value = emailInput.value.trim();

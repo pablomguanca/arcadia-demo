@@ -23,7 +23,7 @@ const COLOR = {
 const SERIF = "'Playfair Display',Georgia,'Times New Roman',Times,serif";
 const SANS = "'Inter','Helvetica Neue',Helvetica,Arial,sans-serif";
 
-const SITE_URL = 'https://brochure.arcadiaartresidence.com.ar';
+const SITE_URL = 'https://arcadiaartresidence.com.ar';
 // El mail necesita URL absoluta: los clientes de correo no resuelven rutas relativas
 // ni admiten data: URIs (Gmail las descarta).
 const LOGO_URL = `${SITE_URL}/assets/img/logo/logo-arcadia-email.png`;

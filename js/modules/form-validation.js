@@ -1,4 +1,4 @@
-import { getRecaptchaToken, loadRecaptchaScript } from './recaptcha.js';
+import { getRecaptchaToken, primeRecaptcha } from './recaptcha.js';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_PATTERN = /^[\d\s()+-]{6,}$/;
@@ -70,7 +70,7 @@ export function initFormValidation() {
   if (!form) return;
 
   applyLeadParams(form);
-  loadRecaptchaScript().catch(() => {});
+  primeRecaptcha(form);
 
   const status = document.getElementById('form-status');
   const fields = [
