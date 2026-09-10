@@ -5,6 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nosotros | Consultora en Desarrollos Inmobiliarios desde 1999 — Arcadia Residence</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1Q604B72PD"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-1Q604B72PD');
+    </script>
     <meta name="description"
         content="Somos una consultora especializada en desarrollos inmobiliarios desde el pozo desde 1999. Más de 30 emprendimientos y un compromiso solidario detrás de Arcadia Residence.">
     <meta name="keywords"
@@ -16,8 +25,8 @@
     <meta property="og:description"
         content="Más de 25 años y 30 emprendimientos respaldan Arcadia Residence. Conocé a la consultora detrás del proyecto y su compromiso solidario.">
     <meta property="og:image" content="https://arcadiaartresidence.com.ar/assets/img/og/arcadia-og.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:url" content="https://arcadiaartresidence.com.ar/nosotros">
     <meta property="og:locale" content="es_AR">
 
@@ -29,11 +38,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style"
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@500&display=swap"
-    onload="this.onload=null;this.rel='stylesheet'">
-  <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@500&display=swap">
-  </noscript>
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@500&display=swap"
+        onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@500&display=swap">
+    </noscript>
 
     <link rel="icon" href="assets/icons/favicon.png" type="image/png">
     <link rel="apple-touch-icon" href="assets/icons/favicon.png">
@@ -42,60 +52,60 @@
 
     <script type="application/ld+json">
     {
-      "@context": "https://schema.org",
-      "@type": "ApartmentComplex",
-      "name": "Arcadia Residence",
-      "description": "Desarrollo inmobiliario en pozo de departamentos de 1, 2 y 3 ambientes en Coghlan, CABA.",
-      "address": {
+        "@context": "https://schema.org",
+        "@type": "ApartmentComplex",
+        "name": "Arcadia Residence",
+        "description": "Desarrollo inmobiliario en pozo de departamentos de 1, 2 y 3 ambientes en Coghlan, CABA.",
+        "address": {
         "@type": "PostalAddress",
         "streetAddress": "Av. Congreso 3163",
         "addressLocality": "Coghlan, Ciudad Autónoma de Buenos Aires",
         "addressCountry": "AR"
-      },
-      "developer": {
+        },
+        "developer": {
         "@type": "Organization",
         "name": "Grupo Trust Real Estate"
-      },
-      "numberOfAccommodationUnits": {
+        },
+        "numberOfAccommodationUnits": {
         "@type": "QuantitativeValue",
         "value": "unidades de 1, 2 y 3 ambientes"
-      }
+        }
     }
     </script>
 
-  <!-- Meta Pixel Code -->
-  <script>
-    !function (f, b, e, v, n, t, s) {
-      if (f.fbq) return; n = f.fbq = function () {
-        n.callMethod ?
-          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-      };
-      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-      n.queue = [];
+    <!-- Meta Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = [];
 
-      // fbevents.js pesa ~110 KB y bloquea el hilo principal justo cuando el
-      // navegador esta pintando. Se inyecta cuando el hilo queda libre o ante
-      // la primera interaccion, lo que llegue antes. Los fbq() de abajo quedan
-      // encolados y se disparan igual al cargar el script.
-      var loaded = !1;
-      var load = function () {
-        if (loaded) return; loaded = !0;
-        t = b.createElement(e); t.async = !0; t.src = v;
-        s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
-      };
-      ['pointerdown', 'keydown', 'scroll'].forEach(function (evt) {
-        f.addEventListener(evt, load, { once: !0, passive: !0 });
-      });
-      if (f.requestIdleCallback) f.requestIdleCallback(load, { timeout: 3000 });
-      else f.addEventListener('load', function () { setTimeout(load, 1200); });
-    }(window, document, 'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '24488789974092669');
-    fbq('track', 'PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=24488789974092669&ev=PageView&noscript=1" /></noscript>
-  <!-- End Meta Pixel Code -->
+            // fbevents.js pesa ~110 KB y bloquea el hilo principal justo cuando el
+            // navegador esta pintando. Se inyecta cuando el hilo queda libre o ante
+            // la primera interaccion, lo que llegue antes. Los fbq() de abajo quedan
+            // encolados y se disparan igual al cargar el script.
+            var loaded = !1;
+            var load = function () {
+                if (loaded) return; loaded = !0;
+                t = b.createElement(e); t.async = !0; t.src = v;
+                s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+            };
+            ['pointerdown', 'keydown', 'scroll'].forEach(function (evt) {
+                f.addEventListener(evt, load, { once: !0, passive: !0 });
+            });
+            if (f.requestIdleCallback) f.requestIdleCallback(load, { timeout: 3000 });
+            else f.addEventListener('load', function () { setTimeout(load, 1200); });
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '24488789974092669');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=24488789974092669&ev=PageView&noscript=1" /></noscript>
+    <!-- End Meta Pixel Code -->
 </head>
 
 <body>
@@ -104,8 +114,8 @@
     <header class="site-header">
         <div class="container site-header__inner">
             <a class="site-header__logo" href="/" aria-label="Arcadia Residence, ir al inicio">
-                <img class="site-header__logo-img" src="assets/img/logo/logo-arcadia.webp" alt="Arcadia Residence" width="400" height="120"
-          decoding="async">
+                <img class="site-header__logo-img" src="assets/img/logo/logo-arcadia.webp" alt="Arcadia Residence"
+                    width="400" height="120" decoding="async">
             </a>
 
             <button class="site-header__toggle" type="button" aria-label="Abrir menú de navegación"
@@ -267,8 +277,14 @@
                             d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z" />
                     </svg>
                 </a>
-                <a class="site-footer__social-link" href="https://wa.me/541130459267?text=Hola%2C%20quiero%20recibir%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Arcadia%20Art%20Residence." target="_blank" rel="noopener" aria-label="WhatsApp de Arcadia Art Residence, se abre en una pestaña nueva">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0 0 20.465 3.488"/></svg>
+                <a class="site-footer__social-link"
+                    href="https://wa.me/541130459267?text=Hola%2C%20quiero%20recibir%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Arcadia%20Art%20Residence."
+                    target="_blank" rel="noopener"
+                    aria-label="WhatsApp de Arcadia Art Residence, se abre en una pestaña nueva">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0 0 20.465 3.488" />
+                    </svg>
                 </a>
             </div>
         </div>
@@ -281,19 +297,19 @@
     </footer>
 
     <a class="whatsapp-fab"
-    href="https://wa.me/541130459267?text=Hola%2C%20quiero%20recibir%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Arcadia%20Art%20Residence."
-    target="_blank" rel="noopener"
-    aria-label="Escribinos por WhatsApp al +54 11 3045 9267, se abre en una pestaña nueva">
-    <span class="whatsapp-fab__icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path
-          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0 0 20.465 3.488" />
-      </svg>
-    </span>
-    <span class="whatsapp-fab__label">Escribinos por WhatsApp</span>
-  </a>
+        href="https://wa.me/541130459267?text=Hola%2C%20quiero%20recibir%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Arcadia%20Art%20Residence."
+        target="_blank" rel="noopener"
+        aria-label="Escribinos por WhatsApp al +54 11 3045 9267, se abre en una pestaña nueva">
+        <span class="whatsapp-fab__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0 0 20.465 3.488" />
+            </svg>
+        </span>
+        <span class="whatsapp-fab__label">Escribinos por WhatsApp</span>
+    </a>
 
-  <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 
 </html>
