@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://arcadiaartresidence.com.ar/sitemap.xml
