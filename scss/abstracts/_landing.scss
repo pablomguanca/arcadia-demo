@@ -1,0 +1,77 @@
+@use 'variables' as v;
+
+$ink: #14180F;
+$ink-soft: #1D2318;
+$ink-line: rgba(#F2F0E9, 0.14);
+$ink-line-soft: rgba(#F2F0E9, 0.08);
+
+$bone: #F2F0E9;
+$bone-dim: #E7E3D9;
+$bone-line: #D8D3C6;
+$bone-bright: #FFFFFF;
+
+$olive: v.$color-olive;
+$olive-dark: v.$color-olive-dark;
+$sage: v.$color-sage;
+$sage-light: v.$color-sage-light;
+$sage-text: v.$color-sage-text;
+$gold: v.$color-gold;
+$gold-light: #DCBE7B;
+
+$on-ink: #F2F0E9;
+$on-ink-muted: rgba(#F2F0E9, 0.68);
+$on-ink-soft: rgba(#F2F0E9, 0.55);
+$on-ink-faint: rgba(#F2F0E9, 0.4);
+$on-bone: #232720;
+$on-bone-muted: #5C6156;
+
+$danger: #D98C72;
+$danger-text: #E8A798;
+
+$surface-ink: rgba(#F2F0E9, 0.04);
+$surface-ink-strong: rgba(#F2F0E9, 0.08);
+
+$ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+$speed-fast: 0.2s;
+$speed-base: 0.25s;
+$speed-slow: 0.45s;
+$speed-reveal: 0.7s;
+
+$fs-display: clamp(2.15rem, 6.4vw, 3.9rem);
+$fs-h2: clamp(1.85rem, 4.4vw, 3.1rem);
+$fs-h3: clamp(1.15rem, 2.2vw, 1.5rem);
+$fs-lead: clamp(1.02rem, 1.5vw, 1.25rem);
+$fs-body: 1rem;
+$fs-sm: 0.9375rem;
+$fs-xs: 0.875rem;
+$fs-2xs: 0.8125rem;
+$fs-3xs: 0.75rem;
+$fs-4xs: 0.6875rem;
+
+$lh-tight: 1.06;
+$lh-snug: 1.35;
+$lh-base: 1.6;
+$lh-loose: 1.7;
+
+$track-wide: 0.18em;
+$track-mid: 0.14em;
+$track-tight: 0.1em;
+
+$radius-xs: 2px;
+$radius-sm: 4px;
+$radius-round: 50%;
+
+$border-hair: 1px;
+$border-mark: 2px;
+
+$shell: 1180px;
+$measure-lead: 62ch;
+$measure-text: 52ch;
+
+$shadow-card: 0 18px 48px rgba(#000000, 0.28);
+
+$z-sticky: 60;
+$z-topbar: 40;
+$z-skip: 300;
+
+$reveal-shift: 18px;

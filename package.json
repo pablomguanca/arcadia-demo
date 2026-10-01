@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:css": "sass scss/main.scss css/main.css --style=compressed --no-source-map",
-    "watch:css": "sass --watch scss/main.scss css/main.css --style=compressed --no-source-map"
+    "build:css": "sass scss/main.scss:css/main.css scss/inversores.scss:css/inversores.css scss/compradores.scss:css/compradores.css --style=compressed --no-source-map",
+    "watch:css": "sass --watch scss/main.scss:css/main.css scss/inversores.scss:css/inversores.css scss/compradores.scss:css/compradores.css --style=compressed --no-source-map"
   }
 }
