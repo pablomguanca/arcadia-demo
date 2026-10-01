@@ -42,6 +42,8 @@ const PERFIL_LABELS = {
 const ORIGEN_LABELS = {
   home: 'la home',
   contacto: 'la página de contacto',
+  inversores: 'la landing de inversores',
+  compradores: 'la landing de compradores',
 };
 
 // Cortafuegos best-effort contra envíos repetidos. Vercel puede levantar varias
@@ -78,6 +80,19 @@ function clientIp(req) {
   return value.split(',')[0].trim();
 }
 
+const CAMPAIGN_FIELDS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'gclid'];
+
+/** Resume la atribución que manda la landing en una sola línea del aviso. */
+function campaignSummary(body) {
+  return CAMPAIGN_FIELDS
+    .map((clave) => {
+      const valor = cleanText(body[clave], 120);
+      return valor ? `${clave.replace('utm_', '')}: ${valor}` : null;
+    })
+    .filter(Boolean)
+    .join(' · ');
+}
+
 function notifyRecipients(name) {
   return String(process.env[name] || '')
     .split(',')
@@ -108,16 +123,35 @@ export default async function handler(req, res) {
 
   const nombre = cleanText(body.nombre, 120);
   const email = cleanText(body.email, 160).toLowerCase();
-  const telefono = cleanText(body.telefono, 40);
+  // /compradores pide el WhatsApp en el paso 1 y el email recién después, como
+  // opcional: el teléfono llega bajo otro nombre y puede venir sin email.
+  const telefono = cleanText(body.telefono || body.whatsapp, 40);
   const perfil = cleanText(body.perfil, 20);
-  const interes = cleanText(body.interes, 80);
+  const respuestas = typeof body.respuestas === 'object' && body.respuestas ? body.respuestas : {};
+
+  // Las landings de pauta mandan las respuestas anidadas en `respuestas`; los
+  // formularios del sitio institucional mandan `interes` suelto desde la URL.
+  const interes = cleanText(respuestas.interes || body.interes, 80);
+  const plazo = cleanText(respuestas.plazo || body.plazo, 60);
+  const experiencia = cleanText(respuestas.experiencia || body.experiencia, 20);
   const origen = cleanText(body.origen, 40) || 'contacto';
   const mensaje = cleanMultiline(body.mensaje, 4000);
 
+  const estado = cleanText(body.estado, 20);
+  const segmento = cleanText(body.segmento, 20);
+  const tier = cleanText(body.tier, 20);
+  const score = Number.isFinite(Number(body.score)) ? Number(body.score) : null;
+  const consintio = body.consentimiento === true;
+  const campana = campaignSummary(body);
+
   const invalidos = [];
   if (!nombre) invalidos.push('nombre');
-  if (!email || !EMAIL_PATTERN.test(email)) invalidos.push('email');
-  if (!telefono || !PHONE_PATTERN.test(telefono)) invalidos.push('telefono');
+  if (email && !EMAIL_PATTERN.test(email)) invalidos.push('email');
+  if (telefono && !PHONE_PATTERN.test(telefono)) invalidos.push('telefono');
+  // Antes el email era obligatorio siempre. Ahora alcanza con un canal de
+  // contacto: sin esto, el lead parcial de /compradores —que todavía no dio
+  // email— se perdería, que es justo lo que ese paso viene a evitar.
+  if (!email && !telefono) invalidos.push('contacto');
 
   if (invalidos.length) {
     res.status(400).json({ success: false, error: 'Faltan datos o son inválidos.', campos: invalidos });
@@ -141,31 +175,59 @@ export default async function handler(req, res) {
     }
 
     const perfilLabel = PERFIL_LABELS[perfil] || perfil;
-    const origenLabel = ORIGEN_LABELS[origen] || origen;
+    const origenBase = ORIGEN_LABELS[origen] || origen;
+    const origenLabel = estado === 'parcial' ? `${origenBase} (dato parcial)` : origenBase;
 
-    // Primero el alta: si después falla el aviso, el mail igual quedó guardado.
-    // El upsert es idempotente, así que un reintento del visitante no duplica nada.
-    try {
-      await upsertContact({
-        email,
-        attributes: {
-          NOMBRE: nombre,
-          TELEFONO: telefono,
-          PERFIL: perfilLabel,
-          INTERES: interes,
-          SOURCE: `formulario-${origen}`,
-        },
-      });
-    } catch (error) {
-      console.error('[contact] No se pudo guardar el lead en Brevo:', error);
+    // Brevo indexa por email: sin email no hay a quién dar de alta. El lead sin
+    // email igual llega por el aviso interno, que es el canal que no se pierde.
+    if (email) {
+      // Primero el alta: si después falla el aviso, el mail igual quedó guardado.
+      // El upsert es idempotente, así que un reintento del visitante no duplica nada.
+      try {
+        await upsertContact({
+          email,
+          attributes: {
+            NOMBRE: nombre,
+            TELEFONO: telefono,
+            PERFIL: perfilLabel,
+            // La calificación viaja dentro de INTERES y no como atributos nuevos:
+            // si Brevo rechaza un atributo que todavía no existe en la cuenta, el
+            // upsert reintenta sin ninguno y se pierden también nombre y teléfono.
+            INTERES: [
+              interes,
+              plazo && `Plazo: ${plazo}`,
+              experiencia && `Ya invirtió: ${experiencia}`,
+              respuestas.tipologia && `Tipología: ${cleanText(respuestas.tipologia, 40)}`,
+              respuestas.cuando && `Cuándo: ${cleanText(respuestas.cuando, 40)}`,
+              tier && `Tier: ${tier}`,
+            ]
+              .filter(Boolean)
+              .join(' · ')
+              .slice(0, 250),
+            SOURCE: `formulario-${origen}`,
+          },
+        });
+      } catch (error) {
+        console.error('[contact] No se pudo guardar el lead en Brevo:', error);
+      }
     }
 
     const filas = [
       { label: 'Nombre', value: nombre },
-      { label: 'Email', value: email },
-      { label: 'Teléfono', value: telefono },
+      email ? { label: 'Email', value: email } : null,
+      telefono ? { label: 'Teléfono', value: telefono } : null,
       perfilLabel ? { label: 'Perfil', value: perfilLabel } : null,
+      segmento ? { label: 'Segmento', value: segmento } : null,
       interes ? { label: 'Interés', value: interes } : null,
+      plazo ? { label: 'Plazo', value: plazo } : null,
+      experiencia ? { label: 'Ya invirtió', value: experiencia } : null,
+      respuestas.tipologia ? { label: 'Tipología', value: cleanText(respuestas.tipologia, 60) } : null,
+      respuestas.cuando ? { label: 'Cuándo compra', value: cleanText(respuestas.cuando, 60) } : null,
+      respuestas.entrada ? { label: 'Entrada', value: cleanText(respuestas.entrada, 60) } : null,
+      respuestas.pago ? { label: 'Forma de pago', value: cleanText(respuestas.pago, 60) } : null,
+      tier ? { label: 'Tier', value: score === null ? tier : `${tier} (${score}/9)` } : null,
+      consintio ? { label: 'Consentimiento', value: 'Sí' } : null,
+      campana ? { label: 'Campaña', value: campana } : null,
       mensaje ? { label: 'Mensaje', value: mensaje } : null,
     ].filter(Boolean);
 
@@ -180,7 +242,7 @@ export default async function handler(req, res) {
     const avisado = await sendEmail({
       to: destinos.length ? destinos : [DEFAULT_NOTIFY_TO],
       bcc: notifyRecipients('LEAD_NOTIFY_BCC'),
-      replyTo: email,
+      replyTo: email || undefined,
       subject: aviso.subject,
       html: aviso.html,
       text: aviso.text,
@@ -193,6 +255,13 @@ export default async function handler(req, res) {
     recordHit(ip);
 
     // La consulta ya le llegó al cliente: de acá en más nada puede romper la respuesta.
+    // El lead parcial no recibe bienvenida: todavía está completando el formulario
+    // y un mail en mitad del flujo lo distrae de terminarlo.
+    if (!email || estado === 'parcial') {
+      res.status(200).json({ success: true });
+      return;
+    }
+
     try {
       const bienvenida = welcomeEmail({ nombre: nombre.split(' ')[0] });
 
