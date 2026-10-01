@@ -1,0 +1,9 @@
+// Bundle propio de la landing de inversores (/inversores).
+//
+// No comparte hoja con el sitio institucional a propósito: la landing recibe
+// tráfico pago y paga cada KB en la métrica de conversión, así que no arrastra
+// header, carrusel, lightbox ni las secciones de la home. Lo único que reusa es
+// el reset, que es idéntico en las dos.
+@use 'base/reset';
+@use 'components/recaptcha';
+@use 'pages/inversores';
