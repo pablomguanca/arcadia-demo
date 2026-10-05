@@ -2,7 +2,7 @@ import { getRecaptchaToken, primeRecaptcha } from './recaptcha.js';
 import { track, trackMeta } from './tracking.js';
 import { datosDeAtribucion } from './attribution.js';
 import { calificar, sinCalificar } from './scoring.js';
-import { LEAD_ENDPOINT } from '../config.js';
+import { LEAD_ENDPOINT, SCORING } from '../config.js';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_PATTERN = /^[\d\s()+-]{6,}$/;
@@ -149,6 +149,9 @@ const DEFAULTS = {
   metaContentName: '',
   whatsappUrl: 'https://wa.me/541130459267',
   califica: false,
+  scoring: SCORING,
+  mensajeWhatsapp: null,
+  beneficios: {},
   pasos: [],
 };
 
@@ -257,13 +260,14 @@ export function initLeadFlow(options = {}) {
     return payload;
   }
 
-  function mostrarResultado(nombre, tier, etiquetas) {
+  function mostrarResultado(nombre, tier, etiquetas, tokens) {
     if (!resultado) return;
 
     form.hidden = true;
     resultado.hidden = false;
 
-    const activo = config.califica ? (tier === 'caliente' || tier === 'tibio' ? tier : 'nutrir') : 'unico';
+    const hayBloque = (clave) => resultado.querySelector(`[data-outcome="${clave}"]`);
+    const activo = config.califica ? (hayBloque(tier) ? tier : 'nutrir') : 'unico';
     resultado.querySelectorAll('[data-outcome]').forEach((bloque) => {
       bloque.hidden = bloque.dataset.outcome !== activo;
     });
@@ -272,12 +276,19 @@ export function initLeadFlow(options = {}) {
       slot.textContent = nombre;
     });
 
-    const partes = [
-      `Hola, soy ${nombre}.`,
-      etiquetas.tipologia ? `Me interesa un ${etiquetas.tipologia.toLowerCase()}.` : '',
-      'Vengo de la web de Arcadia y quiero información.',
-    ].filter(Boolean);
-    const url = `${config.whatsappUrl.split('?')[0]}?text=${encodeURIComponent(partes.join(' '))}`;
+    resultado.querySelectorAll('[data-benefit]').forEach((bloque) => {
+      const regla = config.beneficios[bloque.dataset.benefit];
+      bloque.hidden = !(typeof regla === 'function' && regla(tokens));
+    });
+
+    const texto = config.mensajeWhatsapp
+      ? config.mensajeWhatsapp(nombre, etiquetas)
+      : [
+          `Hola, soy ${nombre}.`,
+          etiquetas.tipologia ? `Me interesa un ${etiquetas.tipologia.toLowerCase()}.` : '',
+          'Vengo de la web de Arcadia y quiero información.',
+        ].filter(Boolean).join(' ');
+    const url = `${config.whatsappUrl.split('?')[0]}?text=${encodeURIComponent(texto)}`;
 
     resultado.querySelectorAll('[data-outcome-whatsapp]').forEach((enlace) => {
       enlace.href = url;
@@ -320,13 +331,14 @@ export function initLeadFlow(options = {}) {
   async function finalizar(omitido) {
     const grupos = omitido ? [] : todosLosGrupos;
     const etiquetas = etiquetasDe(form, grupos);
+    const tokens = tokensDe(form, grupos);
     const { score, tier } = config.califica
-      ? (omitido ? sinCalificar() : calificar(tokensDe(form, todosLosGrupos)))
+      ? (omitido ? sinCalificar(config.scoring) : calificar(tokens, config.scoring))
       : { score: null, tier: null };
 
     const base = datosBase();
     const payload = { ...base, estado: 'completo', respuestas: etiquetas };
-    if (config.califica) Object.assign(payload, { score, tier });
+    if (config.califica) Object.assign(payload, { score, tier, score_max: config.scoring.max ?? null });
 
     if (estado) estado.textContent = MENSAJES.enviando;
     if (botonEnviar) botonEnviar.disabled = true;
@@ -364,7 +376,7 @@ export function initLeadFlow(options = {}) {
       trackMeta('LeadCalificado', { tier, score, segmento: config.segmento });
     }
 
-    mostrarResultado(base.nombre, tier, etiquetas);
+    mostrarResultado(base.nombre, tier, etiquetas, tokens);
   }
 
   if (botonAvanzar) {
