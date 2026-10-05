@@ -1,9 +1,12 @@
 // Bundle propio de la landing de inversores (/inversores).
 //
-// No comparte hoja con el sitio institucional a propósito: la landing recibe
-// tráfico pago y paga cada KB en la métrica de conversión, así que no arrastra
-// header, carrusel, lightbox ni las secciones de la home. Lo único que reusa es
-// el reset, que es idéntico en las dos.
+// Comparte la base visual con /compradores (misma familia de landings de pauta)
+// y suma encima la capa propia de inversores. No arrastra header, carrusel,
+// lightbox ni las secciones del sitio institucional: el tráfico pago paga cada
+// KB en la métrica de conversión.
 @use 'base/reset';
 @use 'components/recaptcha';
+@use 'components/lead-steps';
+@use 'components/accordion';
+@use 'pages/compradores';
 @use 'pages/inversores';

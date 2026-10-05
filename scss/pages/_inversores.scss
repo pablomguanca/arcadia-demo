@@ -1,1242 +1,159 @@
-// ---------------------------------------------------------------------------
-// Landing de inversores — /inversores
+// Landing de inversores (/inversores).
 //
-// Paleta y escala propias. La institucional es toda verde oliva sobre oscuro;
-// acá se alterna papel (secciones explicativas) con oliva profundo (los momentos
-// de decisión: hero, salto de la rana, ticket, formulario y cierre). Ese ritmo
-// claro/oscuro es lo que marca dónde tiene que mirar alguien que llega de un
-// anuncio y escanea la página en treinta segundos.
-// ---------------------------------------------------------------------------
+// Reusa el sistema visual de /compradores (cmp-*, lead-*, faq): acá solo viven
+// el acento dorado —escopado bajo `.inv`, para no tocar los componentes
+// compartidos— y los bloques que son propios de esta landing.
 @use '../abstracts/variables' as v;
 @use '../abstracts/mixins' as m;
+@use '../abstracts/landing' as l;
 
-// --- Tokens ---------------------------------------------------------------
-$ink: #14180F;
-$ink-soft: #1D2318;
-$ink-line: rgba(#F2F0E9, 0.14);
-$ink-line-soft: rgba(#F2F0E9, 0.08);
+$gold-soft: rgba(l.$gold, 0.14);
 
-$bone: #F2F0E9;
-$bone-dim: #E7E3D9;
-$bone-line: #D8D3C6;
-
-$olive: v.$color-olive;        // #3C4A3A
-$sage: v.$color-sage;          // #8FAF87
-$sage-light: v.$color-sage-light;
-$gold: v.$color-gold;          // #C9A961
-
-$on-ink: #F2F0E9;
-$on-ink-muted: rgba(#F2F0E9, 0.68);
-$on-bone: #232720;
-$on-bone-muted: #5C6156;
-
-$ease: cubic-bezier(0.22, 0.61, 0.36, 1);
-
-// Tipografía fluida: la landing se lee igual en un 375 que en un 1440 sin
-// media queries por cada nivel.
-$fs-display: clamp(2.25rem, 7vw, 4rem);
-$fs-h2: clamp(1.9rem, 4.4vw, 3.25rem);
-$fs-h3: clamp(1.25rem, 2.2vw, 1.6rem);
-$fs-lead: clamp(1.02rem, 1.5vw, 1.25rem);
-
-$shell: 1180px;
-
-// --- Base -----------------------------------------------------------------
-// No hay header fijo: alcanza con un respiro arriba del ancla.
-html {
-  scroll-padding-top: v.$space-3;
-}
-
-body {
-  background-color: $bone;
-  color: $on-bone;
-  font-family: v.$font-body;
-  font-size: 1rem;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
-
-// El JS del formulario esconde pasos y bloques con el atributo `hidden`, y el
-// UA lo aplica con la especificidad más baja que hay: cualquier `display` de
-// componente se lo lleva puesto. Acá gana siempre `hidden`.
-[hidden] {
-  display: none !important;
-}
-
-::selection {
-  background-color: $gold;
-  color: $ink;
-}
-
-:focus-visible {
-  outline: 2px solid $gold;
-  outline-offset: 3px;
-}
-
-.inv-skip {
-  position: absolute;
-  top: -100%;
-  left: 0;
-  z-index: 300;
-  padding: v.$space-2;
-  background-color: $gold;
-  color: $ink;
-  font-weight: v.$fw-semibold;
-
-  &:focus {
-    top: 0;
-  }
-}
-
-.inv-shell {
-  width: 100%;
-  max-width: $shell;
-  margin-inline: auto;
-  padding-inline: v.$space-2;
-
-  @include m.mq(md) {
-    padding-inline: v.$space-4;
-  }
-}
-
-.inv-section {
-  position: relative;
-  padding-block: clamp(3.5rem, 9vw, 7.5rem);
-
-  &--ink {
-    background-color: $ink;
-    color: $on-ink;
-  }
-
-  &--ink-soft {
-    background-color: $ink-soft;
-    color: $on-ink;
-  }
-
-  &--bone {
-    background-color: $bone;
-    color: $on-bone;
-  }
-
-  &--dim {
-    background-color: $bone-dim;
-    color: $on-bone;
-  }
-}
-
-// --- Tipografía de la landing --------------------------------------------
-.inv-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: v.$space-1;
-  font-size: 0.75rem;
-  font-weight: v.$fw-semibold;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: $olive;
-
-  &::before {
-    content: '';
-    width: 28px;
-    height: 1px;
-    background-color: currentColor;
-  }
-
-  .inv-section--ink &,
-  .inv-section--ink-soft & {
-    color: $gold;
-  }
-}
-
-.inv-h2 {
-  margin-top: v.$space-2;
-  font-family: v.$font-heading;
-  font-size: $fs-h2;
-  font-weight: v.$fw-bold;
-  line-height: 1.06;
-  letter-spacing: -0.015em;
-  text-wrap: balance;
-}
-
-.inv-h3 {
-  font-family: v.$font-heading;
-  font-size: $fs-h3;
-  font-weight: v.$fw-bold;
-  line-height: 1.2;
-}
-
-.inv-lead {
-  margin-top: v.$space-3;
-  max-width: 62ch;
-  font-size: $fs-lead;
-  line-height: 1.7;
-  color: $on-bone-muted;
-
-  .inv-section--ink &,
-  .inv-section--ink-soft & {
-    color: $on-ink-muted;
-  }
-}
-
-.inv-note {
-  font-size: 0.8125rem;
-  line-height: 1.6;
-  color: $on-bone-muted;
-
-  .inv-section--ink &,
-  .inv-section--ink-soft & {
-    color: rgba($on-ink, 0.55);
-  }
-}
-
-.inv-quote {
-  margin-top: clamp(2.5rem, 5vw, 4rem);
-  padding-top: v.$space-4;
-  border-top: 1px solid $bone-line;
-  max-width: 44ch;
-  font-family: v.$font-heading;
-  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
-  line-height: 1.4;
-  color: $olive;
-
-  .inv-section--ink &,
-  .inv-section--ink-soft & {
-    border-top-color: $ink-line;
-    color: $on-ink;
-  }
-}
-
-// --- Botones --------------------------------------------------------------
-.inv-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  padding: 1.05rem 1.75rem;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  font-size: 0.8125rem;
-  font-weight: v.$fw-semibold;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 1.2;
-  cursor: pointer;
-  transition: background-color 0.25s $ease, color 0.25s $ease,
-    border-color 0.25s $ease, transform 0.25s $ease;
-
-  &:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
-  }
-
-  &__arrow {
-    transition: transform 0.25s $ease;
-  }
-
-  &:hover:not(:disabled) .inv-btn__arrow {
-    transform: translateX(4px);
-  }
-
-  &--gold {
-    background-color: $gold;
-    color: $ink;
+.inv {
+  // Acento dorado sobre fondos oscuros; en secciones claras el dorado no da contraste.
+  .cmp-btn--sage {
+    background-color: l.$gold;
+    color: l.$ink;
 
     &:hover:not(:disabled),
     &:focus-visible {
-      background-color: #DCBE7B;
+      background-color: l.$gold-light;
     }
   }
 
-  &--olive {
-    background-color: $olive;
-    color: $bone;
+  .cmp-hero .cmp-eyebrow,
+  .cmp-section--ink .cmp-eyebrow,
+  .cmp-section--ink-soft .cmp-eyebrow {
+    color: l.$gold;
+  }
 
-    &:hover:not(:disabled),
-    &:focus-visible {
-      background-color: v.$color-olive-dark;
+  .lead-progress__fill {
+    background-color: l.$gold;
+  }
+
+  .lead-field__input:focus,
+  .lead-pill:hover {
+    border-color: l.$gold;
+  }
+
+  .lead-consent input {
+    accent-color: l.$gold;
+  }
+
+  .lead-consent a,
+  .lead-outcome__aside a {
+    color: l.$gold-light;
+  }
+
+  .lead-pill:has(input:checked) {
+    border-color: l.$gold;
+    background-color: $gold-soft;
+
+    .lead-pill__dot {
+      border-color: l.$gold;
+      box-shadow: inset 0 0 0 4px l.$gold;
     }
   }
 
-  &--line {
-    border-color: currentColor;
-    color: inherit;
-
-    .inv-section--ink &,
-    .inv-section--ink-soft & {
-      border-color: rgba($on-ink, 0.4);
-    }
-
-    &:hover,
-    &:focus-visible {
-      background-color: $olive;
-      border-color: $olive;
-      color: $bone;
-    }
+  .lead-pill:has(input:focus-visible) {
+    outline-color: l.$gold-light;
   }
 
-  &--block {
-    width: 100%;
+  .lead-status,
+  .lead-skip:hover,
+  .lead-skip:focus-visible {
+    color: l.$gold-light;
+  }
+
+  .lead-outcome {
+    border-color: l.$gold;
+  }
+
+  .lead-outcome__mark {
+    border-color: l.$gold;
+    color: l.$gold;
   }
 }
 
-.inv-cta-row {
-  display: flex;
-  flex-direction: column;
-  gap: v.$space-2;
-  margin-top: clamp(2rem, 4vw, 2.75rem);
-
+// Cinco datos clave en una fila en desktop; el último ocupa el ancho completo
+// en la grilla de dos columnas para no dejar un hueco.
+.inv-facts {
   @include m.mq(sm) {
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-}
-
-// --- Barra superior -------------------------------------------------------
-.inv-topbar {
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  z-index: 40;
-  padding-block: v.$space-2;
-
-  &__inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: v.$space-2;
-  }
-
-  &__logo img {
-    width: auto;
-    height: 34px;
-
-    @include m.mq(md) {
-      height: 42px;
-    }
-  }
-
-  &__link {
-    font-size: 0.6875rem;
-    font-weight: v.$fw-semibold;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: rgba($on-ink, 0.7);
-    padding-block: v.$space-1;
-    transition: color 0.25s $ease;
-
-    &:hover,
-    &:focus-visible {
-      color: $gold;
-    }
-  }
-}
-
-// --- 1. Hero --------------------------------------------------------------
-.inv-hero {
-  position: relative;
-  background-color: $ink;
-  color: $on-ink;
-  overflow: hidden;
-
-  &__media {
-    position: absolute;
-    inset: 0;
-  }
-
-  &__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 50% 30%;
-  }
-
-  // Dos capas: una vertical que despega el texto del render y una horizontal
-  // que deja respirar la fachada a la derecha en desktop.
-  &__veil {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(180deg, rgba($ink, 0.93) 0%, rgba($ink, 0.74) 45%, rgba($ink, 0.97) 100%);
-
-    @include m.mq(lg) {
-      background:
-        linear-gradient(90deg, rgba($ink, 0.96) 0%, rgba($ink, 0.88) 42%, rgba($ink, 0.35) 100%),
-        linear-gradient(180deg, rgba($ink, 0.7) 0%, rgba($ink, 0) 35%, rgba($ink, 0.85) 100%);
-    }
-  }
-
-  &__inner {
-    position: relative;
-    z-index: 2;
-    padding-top: clamp(7rem, 16vw, 10rem);
-    padding-bottom: clamp(3rem, 7vw, 5rem);
-
-    // El ancho acompaña al titular: tiene que entrar en dos líneas, que es la
-    // forma en que está escrito. Recién en pantallas grandes se lo achica para
-    // dejar respirar la fachada del render.
-    @include m.mq(lg) {
-      max-width: 88%;
-    }
-
-    @include m.mq(xl) {
-      max-width: 78%;
-    }
-  }
-
-  &__eyebrow {
-    color: $gold;
-  }
-
-  &__title {
-    margin-top: v.$space-3;
-    font-family: v.$font-heading;
-    font-size: $fs-display;
-    font-weight: v.$fw-bold;
-    line-height: 1.02;
-    letter-spacing: -0.025em;
-    text-transform: uppercase;
-
-    span {
-      display: block;
-    }
-
-    span + span {
-      color: $sage-light;
-    }
-  }
-
-  &__subtitle {
-    margin-top: v.$space-3;
-    max-width: 52ch;
-    font-size: $fs-lead;
-    line-height: 1.65;
-    color: $on-ink-muted;
-  }
-
-  // En mobile los datos van apilados: el separador "·" quedaba colgando al
-  // principio de la línea cuando el segundo dato se iba abajo.
-  &__meta {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    margin-top: v.$space-4;
-    font-size: 0.75rem;
-    font-weight: v.$fw-semibold;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba($on-ink, 0.8);
-
-    @include m.mq(sm) {
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: v.$space-1 v.$space-2;
-
-      li + li::before {
-        content: '·';
-        margin-right: v.$space-2;
-        color: $gold;
-      }
-    }
-  }
-
-  // Mini escala de etapas: adelanta el concepto central sin obligar a scrollear.
-  &__scale {
-    margin-top: clamp(2.5rem, 6vw, 4rem);
-    padding-top: v.$space-3;
-    border-top: 1px solid $ink-line;
-  }
-
-  &__scale-label {
-    font-size: 0.6875rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba($on-ink, 0.55);
-  }
-
-  &__scale-track {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    margin-top: v.$space-2;
-    max-width: 460px;
-  }
-
-  &__scale-step {
-    position: relative;
-    padding-top: 22px;
-    font-family: v.$font-heading;
-    font-size: 1rem;
-    color: rgba($on-ink, 0.5);
-    text-align: center;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 8px;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background-color: $ink-line;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 5px;
-      left: 50%;
-      width: 7px;
-      height: 7px;
-      margin-left: -3.5px;
-      border-radius: 50%;
-      background-color: rgba($on-ink, 0.35);
-    }
-
-    &--now {
-      color: $gold;
-
-      &::after {
-        background-color: $gold;
-        box-shadow: 0 0 0 4px rgba($gold, 0.2);
-      }
-    }
-  }
-
-  &__scale-now {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-top: v.$space-2;
-    padding: 0.35rem 0.7rem;
-    border: 1px solid rgba($gold, 0.45);
-    border-radius: 2px;
-    font-size: 0.6875rem;
-    font-weight: v.$fw-semibold;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: $gold;
-  }
-}
-
-// --- 2. Introducción al sistema ------------------------------------------
-.inv-flow {
-  display: grid;
-  gap: v.$space-3;
-  margin-top: clamp(2.5rem, 5vw, 3.5rem);
-  counter-reset: flow;
-
-  @include m.mq(md) {
-    grid-template-columns: repeat(4, 1fr);
-    gap: v.$space-2;
-  }
-
-  &__item {
-    position: relative;
-    counter-increment: flow;
-    padding: v.$space-3 0 0;
-    border-top: 2px solid $olive;
-
-    @include m.mq(md) {
-      padding-right: v.$space-2;
-    }
-  }
-
-  &__num {
-    font-family: v.$font-heading;
-    font-size: 0.875rem;
-    color: $gold;
-
-    &::before {
-      content: '0' counter(flow);
-    }
-  }
-
-  &__label {
-    margin-top: v.$space-1;
-    font-size: clamp(1.05rem, 2vw, 1.3rem);
-    font-weight: v.$fw-semibold;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: $on-bone;
-  }
-
-  &__text {
-    margin-top: v.$space-1;
-    font-size: 0.875rem;
-    line-height: 1.6;
-    color: $on-bone-muted;
-  }
-
-  // La flecha entre pasos vive en el borde: en mobile apunta hacia abajo.
-  &__item:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -#{v.$space-2};
-    width: 10px;
-    height: 10px;
-    border-right: 1px solid $olive;
-    border-bottom: 1px solid $olive;
-    transform: rotate(45deg);
-
-    @include m.mq(md) {
-      left: auto;
-      right: v.$space-1;
-      bottom: auto;
-      top: -5px;
-      transform: rotate(-45deg);
-    }
-  }
-}
-
-// --- 3. El salto de la rana ----------------------------------------------
-//
-// La trayectoria es un SVG con `preserveAspectRatio="none"` y viewBox de alto
-// igual al alto real en px: así el eje X estira con el ancho del contenedor y
-// el eje Y queda 1:1 con los px, y las estaciones se pueden posicionar con el
-// mismo par (x%, y px) que usa el path. `vector-effect` evita que el estirado
-// horizontal deforme el grosor del trazo.
-.inv-salto {
-  &__head {
-    max-width: 48ch;
-  }
-
-  &__track {
-    position: relative;
-    margin-top: clamp(2.5rem, 6vw, 4.5rem);
-
-    @include m.mq(lg) {
-      height: 430px;
-    }
-  }
-
-  &__svg {
-    display: none;
-
-    @include m.mq(lg) {
-      display: block;
-      position: absolute;
-      top: 60px;
-      left: 0;
-      width: 100%;
-      height: 300px;
-      overflow: visible;
-    }
-  }
-
-  &__path {
-    fill: none;
-    stroke-width: 1.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    vector-effect: non-scaling-stroke;
-
-    &--ghost {
-      stroke: $ink-line;
-      stroke-dasharray: 3 5;
-    }
-
-    &--draw {
-      stroke: $gold;
-    }
-  }
-
-  &__stations {
-    display: flex;
-    flex-direction: column;
-    gap: v.$space-3;
-
-    @include m.mq(lg) {
-      display: block;
-    }
-  }
-
-  &__station {
-    position: relative;
-    display: flex;
-    align-items: baseline;
-    gap: 0.6rem;
-    padding-left: v.$space-4;
-
-    // Riel vertical en mobile: la misma idea de trayectoria continua.
-    &::before {
-      content: '';
-      position: absolute;
-      left: 5px;
-      top: 0;
-      bottom: -#{v.$space-3};
-      width: 1px;
-      background-color: $ink-line;
-    }
-
-    &:last-child::before {
-      display: none;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 7px;
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      border: 1px solid $gold;
-      background-color: $ink;
-    }
-
-    @include m.mq(lg) {
-      position: absolute;
-      left: var(--x);
-      top: calc(60px + var(--y));
-      width: 170px;
-      margin-left: -85px;
-      padding-left: 0;
-      text-align: center;
-
-      &::before {
-        display: none;
-      }
-
-      &::after {
-        left: 50%;
-        top: 50%;
-        margin: -6px 0 0 -6px;
-        width: 12px;
-        height: 12px;
-        background-color: $ink;
-      }
-    }
-  }
-
-  &__stage {
-    font-family: v.$font-heading;
-    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-    font-weight: v.$fw-bold;
-    line-height: 1;
-    color: $gold;
-    font-variant-numeric: tabular-nums;
-
-    @include m.mq(lg) {
-      position: absolute;
-      bottom: calc(50% + 22px);
-      left: 0;
-      right: 0;
-    }
-  }
-
-  &__name {
-    font-size: 0.8125rem;
-    font-weight: v.$fw-semibold;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: $on-ink;
-
-    @include m.mq(lg) {
-      position: absolute;
-      top: calc(50% + 22px);
-      left: 0;
-      right: 0;
-      margin-top: 0;
-    }
-  }
-
-  // Franja "HOY — ARCADIA". En desktop es una banda vertical entre -1 y 0;
-  // en mobile cae en el flujo, entre esas dos estaciones.
-  &__now {
-    position: relative;
-    padding: v.$space-2 v.$space-3;
-    margin-left: v.$space-4;
-    border: 1px dashed rgba($gold, 0.5);
-    background-color: rgba($gold, 0.07);
-
-    // El riel no se corta al pasar por el recuadro: la trayectoria tiene que
-    // leerse continua también en mobile.
-    &::before {
-      content: '';
-      position: absolute;
-      left: calc(#{v.$space-4} * -1 + 5px);
-      top: -#{v.$space-3};
-      bottom: -#{v.$space-3};
-      width: 1px;
-      background-color: $ink-line;
-    }
-
-    @include m.mq(lg) {
-      position: absolute;
-      left: 30%;
-      width: 20%;
-      top: 0;
-      bottom: 0;
-      margin: 0;
-      padding: 0;
-      border-width: 0 1px;
-      background: linear-gradient(180deg, rgba($gold, 0.14) 0%, rgba($gold, 0.03) 100%);
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-
-      &::before {
-        display: none;
-      }
-    }
-  }
-
-  &__now-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    font-size: 0.6875rem;
-    font-weight: v.$fw-bold;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: $gold;
-    white-space: nowrap;
-
-    &::before {
-      content: '';
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background-color: $gold;
-      box-shadow: 0 0 0 0 rgba($gold, 0.55);
-      animation: inv-pulse 2.6s infinite;
-    }
-
-    @include m.mq(lg) {
-      padding: 0.4rem 0.75rem;
-      border: 1px solid rgba($gold, 0.5);
-      background-color: $ink;
-      transform: translateY(-50%);
-    }
-  }
-
-  &__now-text {
-    display: block;
-    margin-top: 0.35rem;
-    font-size: 0.8125rem;
-    line-height: 1.5;
-    color: $on-ink-muted;
-
-    @include m.mq(lg) {
-      display: none;
-    }
-  }
-
-  &__foot {
-    margin-top: clamp(2rem, 5vw, 3rem);
-    max-width: 70ch;
-  }
-}
-
-@keyframes inv-pulse {
-  0% { box-shadow: 0 0 0 0 rgba($gold, 0.5); }
-  70% { box-shadow: 0 0 0 10px rgba($gold, 0); }
-  100% { box-shadow: 0 0 0 0 rgba($gold, 0); }
-}
-
-// --- 4. Cómo funciona -----------------------------------------------------
-.inv-steps {
-  margin-top: clamp(2.5rem, 5vw, 4rem);
-  border-top: 1px solid $bone-line;
-
-  &__item {
-    display: grid;
-    gap: v.$space-1;
-    padding-block: clamp(1.5rem, 3vw, 2.25rem);
-    border-bottom: 1px solid $bone-line;
-    transition: background-color 0.3s $ease;
-
-    @include m.mq(md) {
-      grid-template-columns: 140px minmax(0, 1fr) minmax(0, 1.15fr);
-      gap: v.$space-4;
-      align-items: baseline;
-      padding-inline: v.$space-2;
-      margin-inline: -#{v.$space-2};
-    }
-
-    &:hover {
-      @include m.mq(md) {
-        background-color: rgba($olive, 0.05);
-      }
-    }
-  }
-
-  &__num {
-    font-family: v.$font-heading;
-    font-size: clamp(2.25rem, 5vw, 3.5rem);
-    font-weight: v.$fw-bold;
-    line-height: 0.9;
-    color: rgba($olive, 0.28);
-    font-variant-numeric: tabular-nums;
-  }
-
-  &__title {
-    font-size: clamp(1.1rem, 2.2vw, 1.45rem);
-    font-weight: v.$fw-semibold;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    color: $on-bone;
-  }
-
-  &__text {
-    font-size: 0.9375rem;
-    line-height: 1.65;
-    color: $on-bone-muted;
-  }
-
-  &--ink {
-    border-top-color: $ink-line;
-
-    .inv-steps__item {
-      border-bottom-color: $ink-line;
-    }
-  }
-}
-
-.inv-steps-close {
-  display: flex;
-  align-items: center;
-  gap: v.$space-2;
-  margin-top: clamp(2rem, 4vw, 3rem);
-  font-family: v.$font-heading;
-  font-size: clamp(1.35rem, 3.2vw, 2.25rem);
-  font-weight: v.$fw-bold;
-  letter-spacing: 0.01em;
-  text-transform: uppercase;
-  color: $olive;
-
-  &::before {
-    content: '';
-    flex: 0 0 auto;
-    width: clamp(28px, 6vw, 64px);
-    height: 2px;
-    background-color: $gold;
-  }
-}
-
-// --- 5. Arcadia como oportunidad -----------------------------------------
-.inv-arcadia {
-  &__grid {
-    display: grid;
-    gap: clamp(2rem, 5vw, 3.5rem);
-    margin-top: clamp(2rem, 5vw, 3rem);
-
-    @include m.mq(lg) {
-      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
-      align-items: start;
-    }
-  }
-
-  &__media {
-    position: relative;
-    border: 1px solid $ink-line;
-  }
-
-  &__img {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-  }
-
-  &__tag {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    padding: 0.55rem 0.9rem;
-    background-color: $gold;
-    color: $ink;
-    font-size: 0.6875rem;
-    font-weight: v.$fw-bold;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-
-  &__name {
-    font-family: v.$font-heading;
-    font-size: clamp(1.6rem, 3.4vw, 2.35rem);
-    font-weight: v.$fw-bold;
-    line-height: 1.1;
-    text-transform: uppercase;
-    letter-spacing: -0.01em;
-  }
-
-  &__address {
-    margin-top: v.$space-1;
-    font-style: normal;
-    font-size: 0.9375rem;
-    color: $on-ink-muted;
-  }
-
-  &__facts {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1px;
-    margin-top: v.$space-4;
-    background-color: $ink-line;
-    border: 1px solid $ink-line;
-  }
-
-  &__fact {
-    padding: v.$space-3 v.$space-2;
-    background-color: $ink;
-
-    dt {
-      font-size: 0.6875rem;
-      font-weight: v.$fw-semibold;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba($on-ink, 0.55);
-    }
-
-    dd {
-      margin-top: 0.4rem;
-      font-family: v.$font-heading;
-      font-size: clamp(1.15rem, 2.4vw, 1.5rem);
-      font-weight: v.$fw-bold;
-      line-height: 1.15;
-      color: $on-ink;
-    }
-
-    &--wide {
+    .cmp-facts__item:last-child {
       grid-column: 1 / -1;
     }
-
-    &--gold dd {
-      color: $gold;
-    }
   }
 
-  &__units {
-    display: flex;
-    flex-wrap: wrap;
-    gap: v.$space-1 v.$space-3;
-    margin-top: v.$space-3;
-    font-size: 0.875rem;
-    color: $on-ink-muted;
+  @include m.mq(lg) {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
 
-    li {
-      display: flex;
-      align-items: baseline;
-      gap: 0.4rem;
-    }
-
-    strong {
-      font-family: v.$font-heading;
-      font-size: 1.25rem;
-      color: $sage-light;
-    }
-  }
-
-  &__map-block {
-    margin-top: clamp(3rem, 7vw, 5rem);
-    padding-top: clamp(2rem, 4vw, 3rem);
-    border-top: 1px solid $ink-line;
-  }
-
-  &__map-grid {
-    display: grid;
-    gap: v.$space-4;
-    margin-top: v.$space-3;
-
-    @include m.mq(lg) {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
-      align-items: center;
-    }
-  }
-
-  &__map {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    border: 1px solid $ink-line;
-    overflow: hidden;
-    // Los mapas de Google llegan en blanco puro y encandilan sobre la sección
-    // oscura. Invertidos y desaturados quedan como un mapa en modo noche, en el
-    // registro gráfico del resto, y siguen siendo legibles.
-    filter: grayscale(1) invert(0.9) contrast(0.95);
-
-    iframe {
-      display: block;
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
-  }
-
-  &__around {
-    display: grid;
-    gap: v.$space-2;
-
-    li {
-      display: flex;
-      gap: v.$space-2;
-      padding-bottom: v.$space-2;
-      border-bottom: 1px solid $ink-line-soft;
-      font-size: 0.9375rem;
-      color: $on-ink-muted;
-
-      &::before {
-        content: '';
-        flex: 0 0 auto;
-        width: 6px;
-        height: 6px;
-        margin-top: 0.6rem;
-        background-color: $gold;
-      }
+    .cmp-facts__item:last-child {
+      grid-column: auto;
     }
   }
 }
 
-// --- 6. Una inversión medida en m² ---------------------------------------
-.inv-chain {
+.inv-horizontes {
   display: grid;
-  gap: 0;
-  margin-top: clamp(2.5rem, 5vw, 3.5rem);
-  counter-reset: chain;
+  gap: v.$space-2;
+  margin-top: clamp(1.75rem, 4vw, 2.5rem);
 
-  &__step {
-    position: relative;
-    counter-increment: chain;
-    display: grid;
-    grid-template-columns: 56px minmax(0, 1fr);
-    gap: v.$space-3;
-    align-items: start;
-    padding-bottom: clamp(1.75rem, 4vw, 2.5rem);
-
-    @include m.mq(md) {
-      grid-template-columns: 96px minmax(0, 1fr);
-      gap: v.$space-4;
-    }
-
-    // Riel que une los eslabones: la cadena tiene que leerse como una sola línea.
-    &::before {
-      content: '';
-      position: absolute;
-      left: 27px;
-      top: 44px;
-      bottom: 0;
-      width: 1px;
-      background: linear-gradient(180deg, $olive 0%, rgba($olive, 0.25) 100%);
-
-      @include m.mq(md) {
-        left: 47px;
-      }
-    }
-
-    &:last-child {
-      padding-bottom: 0;
-
-      &::before {
-        display: none;
-      }
-    }
+  @include m.mq(md) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  &__mark {
+  &__card {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 44px;
-    border: 1px solid $olive;
-    font-family: v.$font-heading;
-    font-size: 1rem;
-    font-weight: v.$fw-bold;
-    color: $olive;
-    background-color: $bone;
-
-    @include m.mq(md) {
-      width: 96px;
-      font-size: 1.25rem;
-    }
+    flex-direction: column;
+    gap: v.$space-1;
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    background-color: l.$surface-ink;
+    border: l.$border-hair solid l.$ink-line;
+    border-radius: l.$radius-sm;
   }
 
-  &__label {
-    padding-top: 0.55rem;
-    font-size: clamp(1rem, 2vw, 1.25rem);
+  &__name {
+    font-size: l.$fs-4xs;
     font-weight: v.$fw-semibold;
-    letter-spacing: 0.07em;
+    letter-spacing: l.$track-mid;
     text-transform: uppercase;
-    color: $on-bone;
+    color: l.$gold;
+  }
+
+  &__title {
+    font-family: v.$font-heading;
+    font-size: l.$fs-h3;
+    font-weight: v.$fw-bold;
+    line-height: l.$lh-snug;
   }
 
   &__text {
-    margin-top: 0.3rem;
-    max-width: 52ch;
-    font-size: 0.9375rem;
-    line-height: 1.65;
-    color: $on-bone-muted;
+    flex: 1;
+    font-size: l.$fs-xs;
+    line-height: l.$lh-loose;
+    color: l.$on-ink-muted;
   }
 
-  &__step--accent {
-    .inv-chain__mark {
-      background-color: $olive;
-      color: $bone;
-      border-color: $olive;
-    }
+  .cmp-btn {
+    margin-top: v.$space-1;
   }
 }
 
-.inv-m2 {
-  &__grid {
-    display: grid;
-    gap: clamp(2rem, 5vw, 4rem);
-
-    @include m.mq(lg) {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-      align-items: start;
-    }
-  }
+.inv-agenda {
+  max-width: l.$measure-lead;
+  margin-top: v.$space-2;
+  padding: v.$space-2 v.$space-3;
+  border-left: l.$border-mark solid l.$gold;
+  background-color: l.$bone-dim;
+  font-size: l.$fs-lead;
+  line-height: l.$lh-base;
+  color: l.$on-bone;
 }
 
-// --- 7. Puerta de entrada -------------------------------------------------
-.inv-ticket {
-  text-align: center;
-
-  &__amount {
-    display: block;
-    margin-top: v.$space-3;
-    font-family: v.$font-heading;
-    font-size: clamp(3.25rem, 13vw, 8.5rem);
-    font-weight: v.$fw-bold;
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    color: $gold;
-  }
-
-  &__label {
-    display: block;
-    margin-top: v.$space-2;
-    font-size: clamp(1rem, 2.4vw, 1.4rem);
-    font-weight: v.$fw-semibold;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: $on-ink;
-  }
-
-  &__text {
-    margin-inline: auto;
-    max-width: 58ch;
-  }
-
-  .inv-cta-row {
-    justify-content: center;
-  }
-
-  &__foot {
-    margin-top: v.$space-2;
-  }
-}
-
-// --- 8. ¿Es para vos? -----------------------------------------------------
-.inv-fit {
+.inv-why {
   display: grid;
-  gap: 1px;
-  margin-top: clamp(2.5rem, 5vw, 3.5rem);
-  background-color: $bone-line;
-  border: 1px solid $bone-line;
+  gap: v.$space-2;
+  margin-top: clamp(1.75rem, 4vw, 2.5rem);
 
   @include m.mq(sm) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1246,605 +163,42 @@ body {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  &__card {
-    position: relative;
-    padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.25rem, 2.5vw, 1.75rem);
-    background-color: $bone;
-    transition: background-color 0.3s $ease, transform 0.3s $ease;
-
-    &:hover {
-      background-color: #FFFFFF;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 2px;
-      background-color: $gold;
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.35s $ease;
-    }
-
-    &:hover::after {
-      transform: scaleX(1);
-    }
-  }
-
-  &__title {
-    font-size: 0.9375rem;
-    font-weight: v.$fw-bold;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: $olive;
-  }
-
-  &__text {
-    margin-top: v.$space-2;
-    font-size: 0.9375rem;
-    line-height: 1.65;
-    color: $on-bone-muted;
-  }
-}
-
-// --- 9. Formulario de calificación ---------------------------------------
-.inv-lead {
-  &__grid {
-    display: grid;
-    gap: clamp(2.5rem, 5vw, 4.5rem);
-
-    @include m.mq(lg) {
-      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
-      align-items: start;
-    }
-  }
-
-  &__aside-list {
-    display: grid;
-    gap: v.$space-2;
-    margin-top: clamp(2rem, 4vw, 3rem);
-    padding-top: v.$space-3;
-    border-top: 1px solid $ink-line;
-
-    li {
-      display: flex;
-      gap: v.$space-2;
-      font-size: 0.875rem;
-      line-height: 1.6;
-      color: $on-ink-muted;
-
-      &::before {
-        content: '';
-        flex: 0 0 auto;
-        width: 6px;
-        height: 6px;
-        margin-top: 0.55rem;
-        background-color: $sage;
-      }
-    }
-  }
-}
-
-.inv-form {
-  position: relative;
-  padding: clamp(1.5rem, 4vw, 2.5rem);
-  background-color: rgba(#F2F0E9, 0.04);
-  border: 1px solid $ink-line;
-
-  &__head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: v.$space-2;
-    margin-bottom: v.$space-3;
-  }
-
-  &__count {
-    font-size: 0.6875rem;
-    font-weight: v.$fw-semibold;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: rgba($on-ink, 0.6);
-    white-space: nowrap;
-  }
-
-  &__progress {
-    flex: 1;
-    height: 2px;
-    background-color: $ink-line;
-    overflow: hidden;
-
-    span {
-      display: block;
-      height: 100%;
-      width: var(--progress, 50%);
-      background-color: $gold;
-      transition: width 0.45s $ease;
-    }
-  }
-
-  &__step {
-    display: grid;
-    gap: clamp(1.5rem, 3vw, 2rem);
-  }
-
-  &__field {
-    border: 0;
-    padding: 0;
-    margin: 0;
-    min-width: 0;
-  }
-
-  &__legend,
-  &__label {
-    display: block;
-    padding: 0;
-    font-size: 0.9375rem;
-    font-weight: v.$fw-semibold;
-    color: $on-ink;
-  }
-
-  &__options {
-    display: grid;
-    gap: 0.5rem;
-    margin-top: v.$space-2;
-
-    &--row {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  &__input {
-    width: 100%;
-    margin-top: 0.5rem;
-    padding: 0.9rem 1rem;
-    background-color: rgba(#F2F0E9, 0.05);
-    border: 1px solid $ink-line;
-    border-radius: 2px;
-    color: $on-ink;
-    font-size: 1rem;
-    transition: border-color 0.25s $ease, background-color 0.25s $ease;
-
-    &::placeholder {
-      color: rgba($on-ink, 0.38);
-    }
-
-    &:focus {
-      outline: none;
-      border-color: $gold;
-      background-color: rgba(#F2F0E9, 0.08);
-    }
-
-    &[aria-invalid='true'] {
-      border-color: #D98C72;
-    }
-  }
-
-  &__row {
-    display: grid;
-    gap: v.$space-2;
-
-    @include m.mq(sm) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  &__error {
-    display: block;
-    min-height: 1.1em;
-    margin-top: 0.35rem;
-    font-size: 0.75rem;
-    color: #E8A798;
-  }
-
-  &__actions {
-    display: flex;
-    flex-direction: column;
-    gap: v.$space-2;
-
-    @include m.mq(sm) {
-      flex-direction: row;
-      align-items: center;
-    }
-  }
-
-  &__back {
-    align-self: flex-start;
-    padding: 0.5rem 0;
-    font-size: 0.75rem;
-    font-weight: v.$fw-semibold;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba($on-ink, 0.6);
-    transition: color 0.25s $ease;
-
-    &:hover,
-    &:focus-visible {
-      color: $gold;
-    }
-  }
-
-  &__status {
-    min-height: 1.2em;
-    font-size: 0.875rem;
-    color: $sage-light;
-
-    a {
-      font-weight: v.$fw-semibold;
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-  }
-
-  &__legal {
-    font-size: 0.75rem;
-    line-height: 1.55;
-    color: rgba($on-ink, 0.45);
-
-    a {
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-  }
-
-}
-
-// Confirmación del formulario. Vive fuera del <form> —al enviarse se esconde
-// entero— así que repite el marco de la tarjeta en vez de heredarlo.
-.inv-outcome {
-  padding: clamp(1.5rem, 4vw, 2.5rem);
-  background-color: rgba(#F2F0E9, 0.04);
-  border: 1px solid $ink-line;
-  text-align: center;
-
-  &__mark {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 56px;
-    border: 1px solid $gold;
-    border-radius: 50%;
-    color: $gold;
-
-    svg {
-      width: 24px;
-      height: 24px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-  }
-
-  &__title {
-    margin-top: v.$space-2;
-    font-family: v.$font-heading;
-    font-size: clamp(1.4rem, 3vw, 2rem);
-    font-weight: v.$fw-bold;
-    color: $on-ink;
-  }
-
-  &__text {
-    margin-top: v.$space-2;
-    margin-inline: auto;
-    max-width: 44ch;
-    font-size: 0.9375rem;
-    line-height: 1.7;
-    color: $on-ink-muted;
-  }
-}
-
-// Opción tipo chip: el formulario tiene que resolverse a dedazos, no tipeando.
-.inv-opt {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.85rem 1rem;
-  border: 1px solid $ink-line;
-  border-radius: 2px;
-  font-size: 0.9375rem;
-  line-height: 1.35;
-  color: rgba($on-ink, 0.85);
-  cursor: pointer;
-  transition: border-color 0.2s $ease, background-color 0.2s $ease, color 0.2s $ease;
-
-  &:hover {
-    border-color: rgba($gold, 0.55);
-  }
-
-  input {
-    position: absolute;
-    opacity: 0;
-    width: 1px;
-    height: 1px;
-  }
-
-  &__dot {
-    flex: 0 0 auto;
-    width: 15px;
-    height: 15px;
-    border: 1px solid rgba($on-ink, 0.4);
-    border-radius: 50%;
-    transition: border-color 0.2s $ease, box-shadow 0.2s $ease;
-  }
-
-  &:has(input:checked) {
-    border-color: $gold;
-    background-color: rgba($gold, 0.1);
-    color: $on-ink;
-
-    .inv-opt__dot {
-      border-color: $gold;
-      box-shadow: inset 0 0 0 4px $gold;
-    }
-  }
-
-  &:has(input:focus-visible) {
-    outline: 2px solid $gold;
-    outline-offset: 2px;
-  }
-}
-
-// --- 10. Confianza --------------------------------------------------------
-.inv-trust {
-  &__grid {
-    display: grid;
-    gap: clamp(2rem, 5vw, 3.5rem);
-
-    @include m.mq(lg) {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      align-items: center;
-    }
-  }
-
-  &__facts {
-    display: grid;
-    gap: 1px;
-    margin-top: clamp(2rem, 4vw, 2.5rem);
-    background-color: $bone-line;
-    border: 1px solid $bone-line;
-
-    @include m.mq(sm) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  &__fact {
+  &__item {
     padding: clamp(1.25rem, 3vw, 1.75rem);
-    background-color: $bone;
-
-    dt {
-      font-family: v.$font-heading;
-      font-size: clamp(1.5rem, 3.5vw, 2.25rem);
-      font-weight: v.$fw-bold;
-      line-height: 1;
-      color: $olive;
-    }
-
-    dd {
-      margin-top: 0.5rem;
-      margin-left: 0;
-      font-size: 0.8125rem;
-      line-height: 1.5;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: $on-bone-muted;
-    }
+    background-color: l.$bone-bright;
+    border: l.$border-hair solid l.$bone-line;
+    border-top: l.$border-mark solid l.$gold;
   }
 
-  &__gallery {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: v.$space-1;
+  &__label {
+    font-size: l.$fs-4xs;
+    font-weight: v.$fw-semibold;
+    letter-spacing: l.$track-mid;
+    text-transform: uppercase;
+    color: l.$on-bone-muted;
   }
-
-  &__shot {
-    position: relative;
-    overflow: hidden;
-    margin: 0;
-
-    &:first-child {
-      grid-column: 1 / -1;
-    }
-
-    img {
-      width: 100%;
-      height: 100%;
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
-      transition: transform 0.6s $ease;
-    }
-
-    &:hover img {
-      transform: scale(1.04);
-    }
-
-    figcaption {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      padding: 0.4rem 0.7rem;
-      background-color: rgba($ink, 0.82);
-      color: $bone;
-      font-size: 0.6875rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-  }
-}
-
-// --- 11. Cierre -----------------------------------------------------------
-.inv-close {
-  text-align: center;
 
   &__title {
-    margin-top: v.$space-3;
+    margin-top: 0.4rem;
     font-family: v.$font-heading;
-    font-size: clamp(2.1rem, 6vw, 4rem);
+    font-size: l.$fs-h3;
     font-weight: v.$fw-bold;
-    line-height: 1.04;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
-    text-wrap: balance;
-
-    span {
-      display: block;
-    }
-
-    span + span {
-      color: $gold;
-    }
+    line-height: l.$lh-snug;
+    color: l.$olive;
   }
 
   &__text {
-    margin-inline: auto;
-    max-width: 54ch;
-  }
-
-  .inv-cta-row {
-    justify-content: center;
+    margin-top: v.$space-1;
+    font-size: l.$fs-xs;
+    line-height: l.$lh-loose;
+    color: l.$on-bone-muted;
   }
 }
 
-// --- Footer ---------------------------------------------------------------
-.inv-footer {
-  background-color: $ink-soft;
-  color: $on-ink;
-  padding-block: v.$space-4;
-  border-top: 1px solid $ink-line;
-
-  &__inner {
-    display: flex;
-    flex-direction: column;
-    gap: v.$space-3;
-
-    @include m.mq(md) {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: flex-end;
-    }
-  }
-
-  &__brand {
-    font-family: v.$font-heading;
-    font-size: 1.05rem;
-    font-weight: v.$fw-bold;
-    letter-spacing: 0.02em;
-  }
-
-  &__address {
-    margin-top: 0.4rem;
-    font-style: normal;
-    font-size: 0.8125rem;
-    line-height: 1.6;
-    color: rgba($on-ink, 0.6);
-  }
-
-  &__side {
-    display: flex;
-    flex-direction: column;
-    gap: v.$space-1;
-
-    @include m.mq(md) {
-      align-items: flex-end;
-    }
-  }
-
-  &__link {
-    font-size: 0.75rem;
-    font-weight: v.$fw-semibold;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba($on-ink, 0.7);
-    transition: color 0.25s $ease;
-
-    &:hover,
-    &:focus-visible {
-      color: $gold;
-    }
-  }
-
-  &__legal {
-    font-size: 0.6875rem;
-    color: rgba($on-ink, 0.4);
-  }
-}
-
-// --- CTA fijo en mobile ---------------------------------------------------
-.inv-sticky {
-  position: fixed;
-  inset-inline: 0;
-  bottom: 0;
-  z-index: 60;
-  padding: 0.6rem v.$space-2 calc(0.6rem + env(safe-area-inset-bottom));
-  background-color: rgba($ink, 0.94);
-  backdrop-filter: blur(8px);
-  border-top: 1px solid $ink-line;
-  transform: translateY(105%);
-  transition: transform 0.35s $ease;
-
-  &[data-visible='true'] {
-    transform: translateY(0);
-  }
-
-  @include m.mq(lg) {
-    display: none;
-  }
-}
-
-// --- Revelado al scroll ---------------------------------------------------
-//
-// El estado oculto lo activa un flag que pone el propio JS en <html>: si el
-// script no corre, el contenido se ve igual. Una landing que se queda en blanco
-// por un error de JS no convierte a nadie.
-.js-reveal [data-reveal] {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.7s $ease, transform 0.7s $ease;
-  transition-delay: var(--reveal-delay, 0ms);
-}
-
-.js-reveal [data-reveal].is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-// La trayectoria del salto de la rana: el clip nace abierto y solo se cierra
-// cuando hay JS, igual que el resto de los reveals.
-.js-reveal .inv-salto__clip {
-  transform: scaleX(0);
-  transform-origin: 0 0;
-  transition: transform 1.6s $ease;
-}
-
-.js-reveal .inv-salto__track.is-drawn .inv-salto__clip {
-  transform: scaleX(1);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .js-reveal [data-reveal],
-  .js-reveal [data-reveal].is-visible {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
-  .js-reveal .inv-salto__clip {
-    transform: none;
-    transition: none;
-  }
-
-  .inv-salto__now-chip::before {
-    animation: none;
-  }
-
-  .inv-sticky {
-    transition: none;
-  }
+.inv-legal {
+  margin-top: v.$space-2;
+  max-width: l.$measure-lead;
+  font-size: l.$fs-3xs;
+  line-height: l.$lh-snug;
+  color: l.$on-ink-soft;
 }

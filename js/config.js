@@ -7,6 +7,9 @@ export const WHATSAPP_NUMBER = '541130459267';
 
 export const PRIVACY_URL = '';
 
+// Link al dossier de inversores. Vacío = el botón no se muestra.
+export const DOSSIER_URL = '';
+
 export const TIPOLOGIA_LABELS = {
   '1amb': '1 ambiente',
   '2amb': '2 ambientes',
@@ -47,6 +50,7 @@ export const SCORING = {
     { tier: 'nutrir', min: 0 },
   ],
   tierSinCalificar: 'sin_calificar',
+  max: 9,
 };
 
 export const COMPRADORES_FORM = {
@@ -81,6 +85,54 @@ export const COMPRADORES_FORM = {
   ],
 };
 
+export const CAPITAL_LABELS = {
+  menos30: 'Menos de US$ 30.000',
+  '30a50': 'Entre US$ 30.000 y US$ 50.000',
+  '50a100': 'Entre US$ 50.000 y US$ 100.000',
+  mas100: 'Más de US$ 100.000',
+  hablarlo: 'Prefiero hablarlo',
+};
+
+export const HORIZONTE_LABELS = {
+  corto: 'Corto plazo (~1 año)',
+  mediano: 'Mediano plazo (hasta fin de obra)',
+  largo: 'Largo plazo (reinvertir)',
+  asesoramiento: 'Quiero asesoramiento',
+};
+
+export const FORMA_CAPITAL_LABELS = {
+  dolares: 'Dólares',
+  pesos: 'Pesos',
+  activo: 'Un activo',
+  mix: 'Una combinación',
+};
+
+export const EXPERIENCIA_LABELS = {
+  frecuencia: 'Invierto con frecuencia',
+  alguna: 'Invertí alguna vez',
+  primera: 'Sería mi primera vez',
+};
+
+const CAPITAL_CALIFICANTE = ['30a50', '50a100', 'mas100'];
+
+export const SCORING_INVERSORES = {
+  // Horizonte, forma de capital y experiencia no puntúan: se guardan para el asesor.
+  puntos: {
+    capital: { menos30: 0, '30a50': 2, '50a100': 3, mas100: 3, hablarlo: 1 },
+    cuando: { ya: 3, '1a3': 2, '3a6': 1, explorando: 0 },
+  },
+  max: 6,
+  tierSinCalificar: 'sin_calificar',
+  // HOT/WARM/NURTURE se mantienen con los nombres que ya usa el reporting.
+  clasificar({ capital, cuando }) {
+    const capitalOk = CAPITAL_CALIFICANTE.includes(capital);
+    const calificante = capitalOk || capital === 'hablarlo';
+    if (capitalOk && (cuando === 'ya' || cuando === '1a3')) return 'caliente';
+    if (calificante && ['ya', '1a3', '3a6'].includes(cuando)) return 'tibio';
+    return 'nutrir';
+  },
+};
+
 export const INVERSORES_FORM = {
   formId: 'inv-lead-form',
   trackId: 'inversores',
@@ -88,24 +140,31 @@ export const INVERSORES_FORM = {
   origen: 'inversores',
   perfil: 'invertir',
   metaContentName: 'Landing Inversores',
-  whatsappUrl: `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hola, quiero analizar una inversión en Arcadia Art Residence.')}`,
-  califica: false,
+  whatsappUrl: `https://wa.me/${WHATSAPP_NUMBER}`,
+  califica: true,
+  scoring: SCORING_INVERSORES,
+  mensajeWhatsapp: (nombre, etiquetas) =>
+    [
+      `Hola, soy ${nombre}.`,
+      'Quiero información para invertir en Arcadia.',
+      etiquetas.horizonte ? `Mi horizonte: ${etiquetas.horizonte}.` : '',
+    ].filter(Boolean).join(' '),
+  // La agenda de inversores se menciona solo si declaró capital desde US$ 30.000.
+  beneficios: {
+    agenda: ({ capital }) => CAPITAL_CALIFICANTE.includes(capital),
+  },
   pasos: [
+    { ...COMPRADORES_FORM.pasos[0], recaptcha: 'inversores_parcial' },
     {
       recaptcha: 'inversores',
       grupos: [
-        { name: 'interes', mensaje: 'Elegí una opción para continuar' },
-        { name: 'plazo', mensaje: 'Elegí un plazo para continuar' },
-        { name: 'experiencia', mensaje: 'Elegí una opción para continuar' },
+        { name: 'capital', labels: CAPITAL_LABELS, requerido: false },
+        { name: 'horizonte', labels: HORIZONTE_LABELS, requerido: false },
+        { name: 'cuando', labels: CUANDO_LABELS, requerido: false },
+        { name: 'formaCapital', labels: FORMA_CAPITAL_LABELS, requerido: false },
+        { name: 'experiencia', labels: EXPERIENCIA_LABELS, requerido: false },
       ],
-    },
-    {
-      recaptcha: 'inversores',
-      campos: [
-        { name: 'nombre' },
-        { name: 'telefono', tipo: 'tel' },
-        { name: 'email', tipo: 'email' },
-      ],
+      campos: [{ name: 'email', tipo: 'email', requerido: false }],
     },
   ],
 };

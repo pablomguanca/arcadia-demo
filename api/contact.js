@@ -133,7 +133,12 @@ export default async function handler(req, res) {
   // formularios del sitio institucional mandan `interes` suelto desde la URL.
   const interes = cleanText(respuestas.interes || body.interes, 80);
   const plazo = cleanText(respuestas.plazo || body.plazo, 60);
-  const experiencia = cleanText(respuestas.experiencia || body.experiencia, 20);
+  const experiencia = cleanText(respuestas.experiencia || body.experiencia, 40);
+  // Respuestas de /inversores (el horizonte reemplaza al `plazo` de la landing anterior).
+  const capital = cleanText(respuestas.capital, 60);
+  const horizonte = cleanText(respuestas.horizonte, 60);
+  const formaCapital = cleanText(respuestas.formaCapital, 60);
+  const scoreMax = Number.isFinite(Number(body.score_max)) && Number(body.score_max) > 0 ? Number(body.score_max) : 9;
   const origen = cleanText(body.origen, 40) || 'contacto';
   const mensaje = cleanMultiline(body.mensaje, 4000);
 
@@ -196,6 +201,8 @@ export default async function handler(req, res) {
             INTERES: [
               interes,
               plazo && `Plazo: ${plazo}`,
+              capital && `Capital: ${capital}`,
+              horizonte && `Horizonte: ${horizonte}`,
               experiencia && `Ya invirtió: ${experiencia}`,
               respuestas.tipologia && `Tipología: ${cleanText(respuestas.tipologia, 40)}`,
               respuestas.cuando && `Cuándo: ${cleanText(respuestas.cuando, 40)}`,
@@ -222,10 +229,15 @@ export default async function handler(req, res) {
       plazo ? { label: 'Plazo', value: plazo } : null,
       experiencia ? { label: 'Ya invirtió', value: experiencia } : null,
       respuestas.tipologia ? { label: 'Tipología', value: cleanText(respuestas.tipologia, 60) } : null,
-      respuestas.cuando ? { label: 'Cuándo compra', value: cleanText(respuestas.cuando, 60) } : null,
+      capital ? { label: 'Capital', value: capital } : null,
+      horizonte ? { label: 'Horizonte', value: horizonte } : null,
+      formaCapital ? { label: 'Forma del capital', value: formaCapital } : null,
+      respuestas.cuando
+        ? { label: segmento === 'inversor' ? 'Cuándo invertiría' : 'Cuándo compra', value: cleanText(respuestas.cuando, 60) }
+        : null,
       respuestas.entrada ? { label: 'Entrada', value: cleanText(respuestas.entrada, 60) } : null,
       respuestas.pago ? { label: 'Forma de pago', value: cleanText(respuestas.pago, 60) } : null,
-      tier ? { label: 'Tier', value: score === null ? tier : `${tier} (${score}/9)` } : null,
+      tier ? { label: 'Tier', value: score === null ? tier : `${tier} (${score}/${scoreMax})` } : null,
       consintio ? { label: 'Consentimiento', value: 'Sí' } : null,
       campana ? { label: 'Campaña', value: campana } : null,
       mensaje ? { label: 'Mensaje', value: mensaje } : null,
