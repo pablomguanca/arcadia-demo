@@ -27,6 +27,15 @@ $gold-soft: rgba(l.$gold, 0.14);
     color: l.$gold;
   }
 
+  // Por debajo de lg el hero es una sola columna: subtítulo y chips antes del form.
+  .cmp-hero__aside {
+    order: 2;
+  }
+
+  .cmp-hero__form {
+    order: 3;
+  }
+
   .lead-progress__fill {
     background-color: l.$gold;
   }
@@ -87,6 +96,17 @@ $gold-soft: rgba(l.$gold, 0.14);
   @include m.mq(lg) {
     grid-template-columns: repeat(5, minmax(0, 1fr));
 
+    // Con cinco columnas el valor más largo ("Libre de comisiones y gastos")
+    // se partía en tres líneas: tipografía y padding menores lo dejan en dos.
+    .cmp-facts__item {
+      padding-inline: v.$space-2 v.$space-1;
+    }
+
+    .cmp-facts__item dd {
+      font-size: clamp(1rem, 1.35vw, 1.15rem);
+      text-wrap: balance;
+    }
+
     .cmp-facts__item:last-child {
       grid-column: auto;
     }
@@ -139,15 +159,22 @@ $gold-soft: rgba(l.$gold, 0.14);
   }
 }
 
+// La agenda es la idea central de la campaña: va como bloque oscuro, con
+// filete dorado arriba y la frase en tipografía de título.
+.inv-agenda-section {
+  border-top: l.$border-mark solid l.$gold;
+}
+
 .inv-agenda {
-  max-width: l.$measure-lead;
-  margin-top: v.$space-2;
-  padding: v.$space-2 v.$space-3;
+  max-width: 44ch;
+  margin-top: v.$space-3;
+  padding-left: v.$space-3;
   border-left: l.$border-mark solid l.$gold;
-  background-color: l.$bone-dim;
-  font-size: l.$fs-lead;
-  line-height: l.$lh-base;
-  color: l.$on-bone;
+  font-family: v.$font-heading;
+  font-size: clamp(1.3rem, 3vw, 1.95rem);
+  font-weight: v.$fw-bold;
+  line-height: l.$lh-snug;
+  color: l.$on-ink;
 }
 
 .inv-why {
