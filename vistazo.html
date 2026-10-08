@@ -267,8 +267,21 @@
                 placeholder="tu@email.com" aria-label="Correo electrónico para acceder al tour 360">
               <span class="form__error" id="tour-email-error" role="alert"></span>
             </div>
+            <div class="form__group vistazo__tour-consent">
+              <label class="form__consent" for="tour-consentimiento">
+                <input class="form__consent-input" type="checkbox" id="tour-consentimiento" name="consentimiento"
+                  required aria-required="true" aria-describedby="tour-consentimiento-error">
+                <span>Acepto recibir por email información del proyecto. Ver <a href="/privacidad" target="_blank"
+                    rel="noopener">política de privacidad</a>.</span>
+              </label>
+              <span class="form__error" id="tour-consentimiento-error" role="alert"></span>
+            </div>
             <button class="btn btn--primary form__submit" type="submit">Acceder ahora</button>
             <p class="form__status" id="tour-gate-status" role="status" aria-live="polite"></p>
+            <p class="form__recaptcha-note">Este sitio está protegido por reCAPTCHA y aplican la <a
+                href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de Privacidad</a> y
+              los <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Términos de Servicio</a> de
+              Google.</p>
           </form>
         </div>
       </div>
@@ -292,6 +305,7 @@
         <a class="site-footer__nav-link" href="/vistazo">Un vistazo a Arcadia</a>
         <a class="site-footer__nav-link" href="/nosotros">Nosotros</a>
         <a class="site-footer__nav-link" href="/contacto">Contacto</a>
+        <a class="site-footer__nav-link" href="/privacidad">Política de privacidad</a>
       </nav>
 
       <div class="site-footer__social" aria-label="Redes sociales de Grupo Trust">

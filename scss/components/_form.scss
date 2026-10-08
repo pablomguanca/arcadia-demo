@@ -94,6 +94,39 @@
     @include m.visually-hidden;
   }
 
+  &__consent {
+    @include m.flex(row, flex-start, flex-start, v.$space-1);
+    font-size: v.$fs-sm;
+    line-height: v.$lh-base;
+    color: v.$white-85;
+    cursor: pointer;
+
+    a {
+      color: v.$color-sage-text;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+
+      &:hover,
+      &:focus-visible {
+        color: v.$color-white;
+      }
+    }
+  }
+
+  &__consent-input {
+    flex: 0 0 auto;
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-top: 0.15rem;
+    accent-color: v.$color-sage;
+    cursor: pointer;
+
+    &[aria-invalid='true'] {
+      outline: 2px solid #d97a6a;
+      outline-offset: 2px;
+    }
+  }
+
   &__submit {
     align-self: flex-start;
   }

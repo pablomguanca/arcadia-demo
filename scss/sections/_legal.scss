@@ -1,0 +1,199 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+// Páginas legales: texto largo, así que todo se piensa para leer cómodo —
+// columna angosta, interlineado amplio y enlaces subrayados.
+.legal {
+  @include m.section-padding;
+  background-color: v.$color-olive-dark;
+
+  &__inner {
+    max-width: 780px;
+  }
+
+  &__header {
+    padding-bottom: v.$space-4;
+    border-bottom: 1px solid v.$sage-light-25;
+  }
+
+  &__title {
+    margin-top: v.$space-1;
+  }
+
+  &__updated {
+    margin-top: v.$space-2;
+    font-size: v.$fs-sm;
+    color: v.$color-sage-text;
+  }
+
+  &__intro {
+    margin-top: v.$space-3;
+    color: v.$white-85;
+  }
+
+  &__toc {
+    margin-block: v.$space-4;
+    padding: v.$space-3;
+    border-radius: v.$radius-md;
+    background-color: v.$sage-light-10;
+  }
+
+  &__toc-title {
+    font-size: v.$fs-sm;
+    font-weight: v.$fw-semibold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: v.$color-sage-text;
+  }
+
+  &__toc-list {
+    margin-top: v.$space-1;
+    padding-left: v.$space-3;
+    list-style: decimal;
+    color: v.$white-70;
+
+    @include m.mq(md) {
+      columns: 2;
+      column-gap: v.$space-5;
+    }
+
+    li {
+      padding-block: 0.2rem;
+      break-inside: avoid;
+    }
+
+    a {
+      color: v.$white-85;
+      text-decoration: none;
+
+      &:hover {
+        color: v.$color-white;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__section {
+    // El header fijo taparía el título al saltar desde el índice.
+    scroll-margin-top: 6rem;
+    padding-top: v.$space-4;
+
+    h2 {
+      font-size: v.$fs-xl;
+
+      @include m.mq(md) {
+        font-size: v.$fs-2xl;
+      }
+    }
+
+    h3 {
+      margin-top: v.$space-3;
+      font-size: v.$fs-lg;
+      color: v.$color-sage-text;
+    }
+
+    p,
+    ul {
+      margin-top: v.$space-2;
+      color: v.$white-85;
+    }
+
+    ul {
+      padding-left: v.$space-3;
+      list-style: disc;
+
+      ul {
+        margin-top: v.$space-1;
+        list-style: circle;
+      }
+    }
+
+    li {
+      line-height: v.$lh-loose;
+
+      + li {
+        margin-top: 0.35rem;
+      }
+    }
+
+    strong {
+      color: v.$color-white;
+      font-weight: v.$fw-semibold;
+    }
+
+    a {
+      color: v.$color-sage-text;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      overflow-wrap: anywhere;
+
+      &:hover {
+        color: v.$color-white;
+      }
+    }
+
+    .legal__contact {
+      padding-left: 0;
+      list-style: none;
+    }
+
+    code {
+      font-size: 0.9em;
+      padding: 0.1em 0.35em;
+      border-radius: v.$radius-sm;
+      background-color: v.$sage-light-15;
+      color: v.$color-white;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  &__table-wrap {
+    margin-top: v.$space-3;
+    overflow-x: auto;
+    border: 1px solid v.$sage-light-25;
+    border-radius: v.$radius-md;
+  }
+
+  &__table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+    font-size: v.$fs-sm;
+
+    th,
+    td {
+      padding: v.$space-1 v.$space-2;
+      text-align: left;
+      vertical-align: top;
+      line-height: v.$lh-base;
+    }
+
+    th {
+      background-color: v.$sage-light-10;
+      color: v.$color-sage-text;
+      font-weight: v.$fw-semibold;
+    }
+
+    td {
+      color: v.$white-85;
+      border-top: 1px solid v.$sage-light-15;
+    }
+  }
+
+  &__notice {
+    margin-top: v.$space-3;
+    padding: v.$space-3;
+    border-left: 3px solid v.$color-gold;
+    border-radius: 0 v.$radius-md v.$radius-md 0;
+    background-color: v.$sage-light-10;
+
+    p {
+      margin-top: 0;
+      font-size: v.$fs-sm;
+
+      + p {
+        margin-top: v.$space-2;
+      }
+    }
+  }
+}

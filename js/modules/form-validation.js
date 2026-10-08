@@ -11,6 +11,12 @@ function setFieldError(input, errorEl, message) {
 }
 
 function validateField(input, errorEl) {
+  if (input.type === 'checkbox') {
+    const message = input.required && !input.checked ? 'Necesitamos tu confirmación para poder contactarte' : '';
+    setFieldError(input, errorEl, message);
+    return !message;
+  }
+
   const value = input.value.trim();
 
   if (input.hasAttribute('required') && !value) {
@@ -60,6 +66,7 @@ function collectPayload(form, token) {
     mensaje: data.get('mensaje'),
     interes: data.get('interes'),
     origen: data.get('origen'),
+    consentimiento: data.get('consentimiento') === 'on',
     website: data.get('website'),
     token,
   };
@@ -77,10 +84,13 @@ export function initFormValidation() {
     { input: form.querySelector('#nombre'), error: form.querySelector('#nombre-error') },
     { input: form.querySelector('#email'), error: form.querySelector('#email-error') },
     { input: form.querySelector('#telefono'), error: form.querySelector('#telefono-error') },
-  ];
+    { input: form.querySelector('#consentimiento'), error: form.querySelector('#consentimiento-error') },
+  ].filter(({ input }) => input);
 
   fields.forEach(({ input, error }) => {
-    input.addEventListener('blur', () => validateField(input, error));
+    // La casilla se valida al cambiar: el blur la marcaría en rojo apenas pasás por ella con el tab.
+    const evento = input.type === 'checkbox' ? 'change' : 'blur';
+    input.addEventListener(evento, () => validateField(input, error));
   });
 
   form.addEventListener('submit', async (event) => {

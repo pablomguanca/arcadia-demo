@@ -5,7 +5,7 @@ export const LEAD_ENDPOINT = '/api/contact';
 
 export const WHATSAPP_NUMBER = '541130459267';
 
-export const PRIVACY_URL = '';
+export const PRIVACY_URL = '/privacidad';
 
 // Link al dossier de inversores. Vacío = el botón no se muestra.
 export const DOSSIER_URL = '';

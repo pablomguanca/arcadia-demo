@@ -10,7 +10,7 @@ const OK = 'ok';
 const RECHAZO = 'rechazo';
 const AVERIA = 'averia';
 
-async function enviarLead(email) {
+async function enviarLead(email, consentimiento) {
   let token = '';
 
   try {
@@ -22,7 +22,7 @@ async function enviarLead(email) {
   const response = await fetch('/api/save-lead', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, token, source: 'vistazo-tour-360' }),
+    body: JSON.stringify({ email, consentimiento, source: 'vistazo-tour-360', token }),
   });
 
   if (response.status === 400 || response.status === 403) return RECHAZO;
@@ -57,6 +57,8 @@ export function initTourGate() {
 
   const emailInput = form.querySelector('#tour-email');
   const emailError = form.querySelector('#tour-email-error');
+  const consentInput = form.querySelector('#tour-consentimiento');
+  const consentError = form.querySelector('#tour-consentimiento-error');
   const status = document.getElementById('tour-gate-status');
   const submitButton = form.querySelector('.form__submit');
 
@@ -74,15 +76,28 @@ export function initTourGate() {
     emailError.textContent = valid ? '' : 'Ingresá un email válido';
   });
 
+  function validarConsentimiento() {
+    if (!consentInput) return true;
+    const ok = consentInput.checked;
+    consentInput.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    consentError.textContent = ok ? '' : 'Necesitamos tu confirmación para enviarte el material';
+    return ok;
+  }
+
+  if (consentInput) consentInput.addEventListener('change', validarConsentimiento);
+
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const email = emailInput.value.trim();
-    if (!email || !EMAIL_PATTERN.test(email)) {
+    const emailOk = Boolean(email) && EMAIL_PATTERN.test(email);
+    if (!emailOk) {
       emailInput.setAttribute('aria-invalid', 'true');
       emailError.textContent = 'Ingresá un email válido';
-      return;
     }
+
+    const consentOk = validarConsentimiento();
+    if (!emailOk || !consentOk) return;
 
     submitButton.disabled = true;
     status.textContent = 'Verificando...';
@@ -90,12 +105,12 @@ export function initTourGate() {
     let veredicto;
 
     try {
-      veredicto = await enviarLead(email);
+      veredicto = await enviarLead(email, true);
     } catch (error) {
       // El endpoint no respondió. Un reintento por si fue algo pasajero y, si
       // tampoco sale, entra igual: la falla es nuestra.
       try {
-        veredicto = await enviarLead(email);
+        veredicto = await enviarLead(email, true);
       } catch (segundoError) {
         veredicto = AVERIA;
       }

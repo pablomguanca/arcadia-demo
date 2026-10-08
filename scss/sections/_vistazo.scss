@@ -105,12 +105,30 @@
       }
     }
 
+    // En la fila de escritorio el consentimiento baja a un renglón propio debajo
+    // del input y el botón: en el DOM va antes del botón para que el orden de
+    // tabulación sea el natural (email, casilla, enviar).
+    .vistazo__tour-consent {
+      @include m.mq(md) {
+        flex: 1 1 100%;
+        order: 1;
+      }
+    }
+
     // El estado ocupa la fila entera en vez de ser una columna más al costado:
     // como hermano del input y el botón quedaba espichado contra el borde,
     // partiendo el mensaje en una palabra por renglón.
     .form__status {
       @include m.mq(md) {
         flex-basis: 100%;
+        order: 2;
+      }
+    }
+
+    .form__recaptcha-note {
+      @include m.mq(md) {
+        flex-basis: 100%;
+        order: 3;
       }
     }
   }
