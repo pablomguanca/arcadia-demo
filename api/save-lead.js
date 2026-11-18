@@ -92,6 +92,10 @@ export default async function handler(req, res) {
     // El aviso es informativo: si falla, el visitante igual accede al tour.
     await sendEmail({
       to: notifyRecipients(),
+      bcc: String(process.env.LEAD_NOTIFY_BCC || '')
+        .split(',')
+        .map((destino) => destino.trim())
+        .filter(Boolean),
       replyTo: cleanEmail,
       subject: aviso.subject,
       html: aviso.html,
